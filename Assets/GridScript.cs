@@ -23,12 +23,19 @@ public class GridScript
         }
     }
 
-    public void SetValue(int x, int y, string value)
+    bool PutValue(int x, int y, PlayerScript player)
     {
-        _grid[x][y] = value;
+        if (_grid[x][y] == null) {
+            _grid[x][y] = player.Piece;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public string GetValue(int x, int y)
+    public string Get(int x, int y)
     {
         return _grid[x][y];
     }

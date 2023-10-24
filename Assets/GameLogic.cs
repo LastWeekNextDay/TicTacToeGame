@@ -29,18 +29,6 @@ public class GameLogic : MonoBehaviour
         RandomizeFirstGoer();
     }
 
-    bool PutValue(int x, int y, PlayerScript player)
-    {
-        if (_grid.GetValue(x, y) == null)
-        {
-            _grid.SetValue(x, y, player.Piece);
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-
     void ChangeTurn()
     {
         if (_turn == Player1)
@@ -71,7 +59,7 @@ public class GameLogic : MonoBehaviour
 
     bool ReturnifValueWon(int x, int y)
     {
-        string value = _grid.GetValue(x, y);
+        string value = _grid.Get(x, y);
         int count = 1;
         for (int y2 = y-1; y2 <= y+1; y2++)
         {
@@ -89,7 +77,7 @@ public class GameLogic : MonoBehaviour
                 {
                     continue;
                 }
-                if (_grid.GetValue(x2, y2) == value)
+                if (_grid.Get(x2, y2) == value)
                 {
                     int delta_x = x2 - x;
                     int delta_y = y2 - y;
@@ -112,7 +100,7 @@ public class GameLogic : MonoBehaviour
         {
             return 0;
         }
-        if (_grid.GetValue(x, y) == _grid.GetValue(x + delta_x, y + delta_y))
+        if (_grid.Get(x, y) == _grid.Get(x + delta_x, y + delta_y))
         {
             return 1 + ReturnValuesInARow(x + delta_x, y + delta_y, delta_x, delta_y);
         }
