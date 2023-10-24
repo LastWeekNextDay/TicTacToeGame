@@ -10,10 +10,13 @@ public class GameLogic : MonoBehaviour
     private Player _turn;
     private Grid _grid = null;
     private VictoryCalculator _victoryCalculator = null;
+
+    
+    
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame

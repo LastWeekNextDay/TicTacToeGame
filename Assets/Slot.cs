@@ -6,6 +6,7 @@ public class Slot : MonoBehaviour
 {
     public bool IsOccupied = false;
     private GameObject _pieceObjectAttached;
+
     // Start is called before the first frame update
     void Start()
     {

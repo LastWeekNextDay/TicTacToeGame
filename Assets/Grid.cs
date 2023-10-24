@@ -1,8 +1,9 @@
+using UnityEngine;
+
 public class Grid
 {
     private Slot[][] _grid;
     public int Size { get; private set; }
-
     public void SetupGrid(int x)
     {
         //_grid = new string[x][];
