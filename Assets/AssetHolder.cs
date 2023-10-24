@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AssetHolder : ScriptableObject
+public class AssetHolder : MonoBehaviour
 {
     public GameObject XObjPrefab = null;
     public GameObject OObjPrefab = null;
