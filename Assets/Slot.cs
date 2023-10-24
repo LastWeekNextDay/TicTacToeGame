@@ -69,6 +69,6 @@ public class Slot : MonoBehaviour
     {
         _pieceObjectAttached.transform.parent = transform;
         _pieceObjectAttached.transform.position = transform.position;
-        _pieceObjectAttached.transform.position += new Vector3(1, 0, 0);
+        _pieceObjectAttached.transform.position += new Vector3(0, 1, 0);
     }
 }

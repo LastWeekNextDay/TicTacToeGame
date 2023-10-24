@@ -8,8 +8,8 @@ public class GameLogic : MonoBehaviour
     public Player Player1 = null;
     public Player Player2 = null;
     private Player _turn;
-    private Grid _grid = null;
-    private VictoryCalculator _victoryCalculator = null;
+    private TicTacToeGrid _grid = null;
+    public VictoryCalculator VictoryCalculator = null;
 
     // Start is called before the first frame update
     void Start()
@@ -25,13 +25,13 @@ public class GameLogic : MonoBehaviour
 
     void InitializeGame(int gridSize, int winCondition)
     {
-        _grid = new Grid();
+        _grid = new TicTacToeGrid();
         _grid.SetupGrid(gridSize);
-        _victoryCalculator = new VictoryCalculator(_grid, winCondition);
+        VictoryCalculator = new VictoryCalculator(_grid, winCondition);
         RandomizeFirstGoer();
     }
 
-    void ChangeTurn()
+    public void ChangeTurn()
     {
         if (_turn == Player1)
         {
@@ -56,21 +56,6 @@ public class GameLogic : MonoBehaviour
             _turn = Player2;
             Player2.Piece = "X";
             Player1.Piece = "O";
-        }
-    }
-
-    void PlacePiece(int x, int y, Player player)
-    {
-        if (_grid.Set(x, y, player))
-        {
-            if (_victoryCalculator.ValueHasWon(x, y))
-            {
-                Debug.Log("Player " + player.Piece + " has won!");
-            }
-            else
-            {
-                ChangeTurn();
-            }
         }
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class VictoryCalculator
 {
-    private Grid _grid = null;
+    private TicTacToeGrid _grid = null;
     private int _winCondition = 3;
 
-    public VictoryCalculator(Grid grid, int winCondition)
+    public VictoryCalculator(TicTacToeGrid grid, int winCondition)
     {
         _grid = grid;
         _winCondition = winCondition;
