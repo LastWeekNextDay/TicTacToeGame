@@ -6,11 +6,12 @@ public class Slot : MonoBehaviour
 {
     public bool IsOccupied = false;
     private GameObject _pieceObjectAttached;
+    private AssetHolder _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -47,7 +48,27 @@ public class Slot : MonoBehaviour
             return false;
         } else
         {
-            return true;
+            if (piece == "X")
+            {
+                _pieceObjectAttached = Instantiate(_assetHolder.XObjPrefab);
+            }
+            else if (piece == "O")
+            {
+                _pieceObjectAttached = Instantiate(_assetHolder.OObjPrefab);
+            }
+            if (_pieceObjectAttached != null)
+            {
+                ProperlyPositionPieceObject();
+                IsOccupied = true;
+            }
+            return IsOccupied;
         }
+    }
+
+    void ProperlyPositionPieceObject()
+    {
+        _pieceObjectAttached.transform.parent = transform;
+        _pieceObjectAttached.transform.position = transform.position;
+        _pieceObjectAttached.transform.position += new Vector3(1, 0, 0);
     }
 }
