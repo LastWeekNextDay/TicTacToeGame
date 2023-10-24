@@ -9,15 +9,23 @@ public class TicTacToeGrid : MonoBehaviour
     public void Start()
     {
         _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        SetupGrid(3);
     }
     public void SetupGrid(int x)
     {
-        //_grid = new string[x][];
-        //for (int i = 0; i < x; i++)
-        //{
-        //    _grid[i] = new string[x];
-        //}
+        _ticTacToeGrid = new Slot[x][];
+        for (int i = 0; i < x; i++)
+        {
+            _ticTacToeGrid[i] = new Slot[x];
+        }
         Size = x;
+        for (int x1 = 0; x1 < _ticTacToeGrid.Length; x1++)
+        {
+            for (int y = 0; y < _ticTacToeGrid[x1].Length; y++)
+            {
+                Instantiate(_assetHolder.SlotObjPrefab, new Vector3(x1, 0, y), Quaternion.identity, transform);
+            }
+        }
     }
 
     public void ResetGrid() {        
