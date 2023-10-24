@@ -3,7 +3,7 @@ public class GridScript
     private string[][] _grid; 
     public int Size { get; private set; }
 
-    public void SetGrid(int x)
+    public void SetupGrid(int x)
     {
         _grid = new string[x][];
         for (int i = 0; i < x; i++)
@@ -23,7 +23,7 @@ public class GridScript
         }
     }
 
-    bool PutValue(int x, int y, PlayerScript player)
+    public bool Set(int x, int y, PlayerScript player)
     {
         if (_grid[x][y] == null) {
             _grid[x][y] = player.Piece;
