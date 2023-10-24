@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VictoryScript
+public class VictoryCalculator
 {
-    private GridScript _grid = null;
+    private Grid _grid = null;
     private int _winCondition = 3;
 
-    public VictoryScript(GridScript grid, int winCondition)
+    public VictoryCalculator(Grid grid, int winCondition)
     {
         _grid = grid;
         _winCondition = winCondition;
@@ -15,7 +15,11 @@ public class VictoryScript
 
     public bool ValueHasWon(int x, int y)
     {
-        string value = _grid.Get(x, y);
+        string value = _grid.Get(x, y).Piece();
+        if (value == null)
+        {
+            return false;
+        }
         int count = 1;
         for (int y2 = y - 1; y2 <= y + 1; y2++)
         {
@@ -33,7 +37,7 @@ public class VictoryScript
                 {
                     continue;
                 }
-                if (_grid.Get(x2, y2) == value)
+                if (_grid.Get(x2, y2).Piece() == value)
                 {
                     int delta_x = x2 - x;
                     int delta_y = y2 - y;
@@ -56,7 +60,7 @@ public class VictoryScript
         {
             return 0;
         }
-        if (_grid.Get(x, y) == _grid.Get(x + delta_x, y + delta_y))
+        if (_grid.Get(x, y).Piece() == _grid.Get(x + delta_x, y + delta_y).Piece())
         {
             return 1 + ValuesInARow(x + delta_x, y + delta_y, delta_x, delta_y);
         }

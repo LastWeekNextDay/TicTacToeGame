@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
-    public PlayerScript Player1 = null;
-    public PlayerScript Player2 = null;
-    private PlayerScript _turn;
-    private GridScript _grid = null;
-    private VictoryScript _victoryCalc = null;
+    public Player Player1 = null;
+    public Player Player2 = null;
+    private Player _turn;
+    private Grid _grid = null;
+    private VictoryCalculator _victoryCalculator = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +24,9 @@ public class GameLogic : MonoBehaviour
 
     void InitializeGame(int gridSize, int winCondition)
     {
-        _grid = new GridScript();
+        _grid = new Grid();
         _grid.SetupGrid(gridSize);
-        _victoryCalc = new VictoryScript(_grid, winCondition);
+        _victoryCalculator = new VictoryCalculator(_grid, winCondition);
         RandomizeFirstGoer();
     }
 
@@ -58,11 +58,11 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    void PlacePiece(int x, int y, PlayerScript player)
+    void PlacePiece(int x, int y, Player player)
     {
         if (_grid.Set(x, y, player))
         {
-            if (_victoryCalc.ValueHasWon(x, y))
+            if (_victoryCalculator.ValueHasWon(x, y))
             {
                 Debug.Log("Player " + player.Piece + " has won!");
             }
