@@ -5,6 +5,11 @@ public class Grid
     private Slot[][] _grid;
     public int Size { get; private set; }
     private AssetHolder _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+
+    public Grid()
+    {
+        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+    }
     public void SetupGrid(int x)
     {
         //_grid = new string[x][];

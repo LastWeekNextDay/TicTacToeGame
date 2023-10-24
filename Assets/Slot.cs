@@ -6,12 +6,12 @@ public class Slot : MonoBehaviour
 {
     public bool IsOccupied = false;
     private GameObject _pieceObjectAttached;
-    private AssetHolder _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+    private AssetHolder _assetHolder;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
     }
 
     // Update is called once per frame

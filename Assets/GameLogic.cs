@@ -11,8 +11,6 @@ public class GameLogic : MonoBehaviour
     private Grid _grid = null;
     private VictoryCalculator _victoryCalculator = null;
 
-    
-    
     // Start is called before the first frame update
     void Start()
     {
