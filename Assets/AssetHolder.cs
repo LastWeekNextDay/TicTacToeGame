@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AssetHolder : MonoBehaviour
+public class AssetHolder : ScriptableObject
 {
     public GameObject XPrefab = null;
     public GameObject OPrefab = null;
