@@ -5,12 +5,12 @@ using UnityEngine;
 public class VictoryCalculator
 {
     private TicTacToeGrid _grid = null;
-    private int _winCondition = 3;
+    public int WinCondition = 3;
 
     public VictoryCalculator(TicTacToeGrid grid, int winCondition)
     {
         _grid = grid;
-        _winCondition = winCondition;
+        WinCondition = winCondition;
     }
 
     public bool ValueHasWon(int x, int y)
@@ -43,7 +43,7 @@ public class VictoryCalculator
                     int delta_y = y2 - y;
                     count += ValuesInARow(x, y, delta_x, delta_y);
                     count += ValuesInARow(x, y, -delta_x, -delta_y);
-                    if (count >= _winCondition)
+                    if (count >= WinCondition)
                     {
                         return true;
                     }

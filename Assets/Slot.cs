@@ -6,12 +6,11 @@ public class Slot : MonoBehaviour
 {
     public bool IsOccupied = false;
     private GameObject _pieceObjectAttached;
-    private AssetHolder _assetHolder;
 
     // Start is called before the first frame update
     void Start()
     {
-        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        
     }
 
     // Update is called once per frame
@@ -48,13 +47,14 @@ public class Slot : MonoBehaviour
             return false;
         } else
         {
+            AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
             if (piece == "X")
             {
-                _pieceObjectAttached = Instantiate(_assetHolder.XObjPrefab);
+                _pieceObjectAttached = Instantiate(assetHolder.XObjPrefab);
             }
             else if (piece == "O")
             {
-                _pieceObjectAttached = Instantiate(_assetHolder.OObjPrefab);
+                _pieceObjectAttached = Instantiate(assetHolder.OObjPrefab);
             }
             if (_pieceObjectAttached != null)
             {

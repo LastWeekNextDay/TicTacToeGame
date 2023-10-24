@@ -4,12 +4,10 @@ public class TicTacToeGrid : MonoBehaviour
 {
     private Slot[][] _ticTacToeGrid;
     public int Size { get; private set; }
-    private AssetHolder _assetHolder = null;
 
     public void Start()
     {
-        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-        SetupGrid(3);
+
     }
     public void SetupGrid(int x)
     {
@@ -19,11 +17,12 @@ public class TicTacToeGrid : MonoBehaviour
             _ticTacToeGrid[i] = new Slot[x];
         }
         Size = x;
+        AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
         for (int x1 = 0; x1 < _ticTacToeGrid.Length; x1++)
         {
             for (int y = 0; y < _ticTacToeGrid[x1].Length; y++)
             {
-                Instantiate(_assetHolder.SlotObjPrefab, new Vector3(x1, 0, y), Quaternion.identity, transform);
+                _ticTacToeGrid[x1][y] = Instantiate(assetHolder.SlotObjPrefab, new Vector3(x1, 0, y), Quaternion.identity, transform).GetComponent<Slot>();
             }
         }
     }

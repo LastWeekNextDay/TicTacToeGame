@@ -5,4 +5,9 @@ using UnityEngine;
 public class Player
 {
     public string Piece;
+
+    public Player(string piece)
+    {
+        Piece = piece;
+    }
 }
