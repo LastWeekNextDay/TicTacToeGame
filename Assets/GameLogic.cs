@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
+    public bool GameOver = false;
     public Player Player1 = null;
     public Player Player2 = null;
-    private Player _turn;
+    public Player Turn;
     private TicTacToeGrid _grid = null;
     public VictoryCalculator VictoryCalculator = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _grid = GameObject.Find("Grid").GetComponent<TicTacToeGrid>();
+        SetupMultiPlayer(6, 6);
     }
 
     // Update is called once per frame
@@ -25,21 +27,21 @@ public class GameLogic : MonoBehaviour
 
     void InitializeGame(int gridSize, int winCondition)
     {
-        _grid = new TicTacToeGrid();
         _grid.SetupGrid(gridSize);
+        Camera.main.GetComponent<CameraScript>().SetupCamera();
         VictoryCalculator = new VictoryCalculator(_grid, winCondition);
         RandomizeFirstGoer();
     }
 
     public void ChangeTurn()
     {
-        if (_turn == Player1)
+        if (Turn == Player1)
         {
-            _turn = Player2;
+            Turn = Player2;
         }
         else
         {
-            _turn = Player1;
+            Turn = Player1;
         }
     }
 
@@ -47,15 +49,48 @@ public class GameLogic : MonoBehaviour
         int random = UnityEngine.Random.Range(0, 2);
         if (random == 0)
         {
-            _turn = Player1;
+            Turn = Player1;
             Player1.Piece = "X";
             Player2.Piece = "O";
         }
         else
         {
-            _turn = Player2;
+            Turn = Player2;
             Player2.Piece = "X";
             Player1.Piece = "O";
+        }
+    }
+
+    public void SetupSinglePlayer(int size, int winCon) 
+    {
+        AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        GameObject player1 = Instantiate(assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject player2 = Instantiate(assetHolder.AIPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        Player1 = player1.GetComponent<Player>();
+        Player2 = player2.GetComponent<Player>();
+        InitializeGame(size, winCon);
+    }
+
+    public void SetupMultiPlayer(int size, int winCon)
+    {
+        AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        GameObject player1 = Instantiate(assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject player2 = Instantiate(assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        Player1 = player1.GetComponent<Player>();
+        Player2 = player2.GetComponent<Player>();
+        InitializeGame(size, winCon);
+    }
+
+    public void OnPiecePlaced(int x, int y, Player player)
+    {
+        if (VictoryCalculator.ValueHasWon(x, y))
+        {
+            Debug.Log("Player " + player.Piece + " has won!");
+            GameOver = true;
+        }
+        else
+        {
+            ChangeTurn();
         }
     }
 }

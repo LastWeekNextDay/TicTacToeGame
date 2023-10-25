@@ -6,6 +6,8 @@ public class Slot : MonoBehaviour
 {
     public bool IsOccupied = false;
     private GameObject _pieceObjectAttached;
+    public int x;
+    public int y;
 
     // Start is called before the first frame update
     void Start()
@@ -69,6 +71,6 @@ public class Slot : MonoBehaviour
     {
         _pieceObjectAttached.transform.parent = transform;
         _pieceObjectAttached.transform.position = transform.position;
-        _pieceObjectAttached.transform.position += new Vector3(0, 1, 0);
+        _pieceObjectAttached.transform.position += new Vector3(0, 0.1f, 0);
     }
 }

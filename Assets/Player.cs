@@ -2,12 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player
+public class Player: MonoBehaviour
 {
     public string Piece;
 
-    public Player(string piece)
+    public bool AI = false;
+
+    protected virtual void Start()
     {
-        Piece = piece;
+        
+    }
+
+    protected virtual void Update()
+    {
+        
+    }
+
+    // to string
+    public override string ToString()
+    {
+        return Piece;
     }
 }

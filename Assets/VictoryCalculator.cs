@@ -43,11 +43,11 @@ public class VictoryCalculator
                     int delta_y = y2 - y;
                     count += ValuesInARow(x, y, delta_x, delta_y);
                     count += ValuesInARow(x, y, -delta_x, -delta_y);
+                    Debug.Log(count + "/" + WinCondition + " for " + value);
                     if (count >= WinCondition)
                     {
                         return true;
                     }
-                    count = 1;
                 }
             }
         }
@@ -56,17 +56,16 @@ public class VictoryCalculator
 
     int ValuesInARow(int x, int y, int delta_x, int delta_y)
     {
-        if (x < 0 || x >= _grid.Size || y < 0 || y >= _grid.Size)
+        if (x >= 0 && x < _grid.Size && y >= 0 && y < _grid.Size)
         {
-            return 0;
+            if (x + delta_x >= 0 && x + delta_x < _grid.Size && y + delta_y >= 0 && y + delta_y < _grid.Size)
+            {
+                if (_grid.Get(x, y).Piece() == _grid.Get(x + delta_x, y + delta_y).Piece())
+                {
+                    return 1 + ValuesInARow(x + delta_x, y + delta_y, delta_x, delta_y);
+                }
+            }
         }
-        if (_grid.Get(x, y).Piece() == _grid.Get(x + delta_x, y + delta_y).Piece())
-        {
-            return 1 + ValuesInARow(x + delta_x, y + delta_y, delta_x, delta_y);
-        }
-        else
-        {
-            return 0;
-        }
+        return 0;
     }
 }

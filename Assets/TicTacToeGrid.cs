@@ -23,6 +23,8 @@ public class TicTacToeGrid : MonoBehaviour
             for (int y = 0; y < _ticTacToeGrid[x1].Length; y++)
             {
                 _ticTacToeGrid[x1][y] = Instantiate(assetHolder.SlotObjPrefab, new Vector3(x1, 0, y), Quaternion.identity, transform).GetComponent<Slot>();
+                _ticTacToeGrid[x1][y].x = x1;
+                _ticTacToeGrid[x1][y].y = y;
             }
         }
     }
@@ -37,7 +39,7 @@ public class TicTacToeGrid : MonoBehaviour
         }
     }
 
-    public bool Set(int x, int y, Player player)
+    bool Set(int x, int y, Player player)
     {
         return _ticTacToeGrid[x][y].AttachPiece(player.Piece);
     }
@@ -47,19 +49,12 @@ public class TicTacToeGrid : MonoBehaviour
         return _ticTacToeGrid[x][y];
     }
 
-    void PlacePiece(int x, int y, Player player)
+    public void PlacePiece(int x, int y, Player player)
     {
-        GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
         if (Set(x, y, player))
         {
-            if (gameLogic.VictoryCalculator.ValueHasWon(x, y))
-            {
-                Debug.Log("Player " + player.Piece + " has won!");
-            }
-            else
-            {
-                gameLogic.ChangeTurn();
-            }
+            GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
+            gameLogic.OnPiecePlaced(x, y, player);
         }
     }
 }
