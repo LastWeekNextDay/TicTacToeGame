@@ -24,4 +24,14 @@ public class AssetHolder : MonoBehaviour
     {
         
     }
+
+    public GameObject Spawn(GameObject prefab, Vector3 position)
+    {
+        return Instantiate(prefab, position, Quaternion.identity);
+    }
+
+    public GameObject Spawn(GameObject prefab, Vector3 position, Transform parent)
+    {
+        return Instantiate(prefab, position, Quaternion.identity, parent);
+    }
 }

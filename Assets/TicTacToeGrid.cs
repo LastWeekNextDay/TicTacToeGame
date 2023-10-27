@@ -1,13 +1,17 @@
 using UnityEngine;
 
-public class TicTacToeGrid : MonoBehaviour
+public class TicTacToeGrid
 {
+    private AssetHolder _assetHolder;
+    private GameLogic _gameLogic;
     private Slot[][] _ticTacToeGrid;
+
     public int Size { get; private set; }
 
-    public void Start()
+    public TicTacToeGrid(AssetHolder assetHolder, GameLogic gameLogic)
     {
-
+        _assetHolder = assetHolder;
+        _gameLogic = gameLogic;
     }
 
     public void SetupGrid(int x)
@@ -19,12 +23,11 @@ public class TicTacToeGrid : MonoBehaviour
             _ticTacToeGrid[i] = new Slot[x];
         }
         Size = x;
-        AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
         for (int x1 = 0; x1 < _ticTacToeGrid.Length; x1++)
         {
             for (int y = 0; y < _ticTacToeGrid[x1].Length; y++)
             {
-                _ticTacToeGrid[x1][y] = Instantiate(assetHolder.SlotObjPrefab, new Vector3(x1, 0, y), Quaternion.identity, transform).GetComponent<Slot>();
+                _ticTacToeGrid[x1][y] = _assetHolder.Spawn(_assetHolder.SlotObjPrefab, new Vector3(x1, 0, y)).GetComponent<Slot>();
                 _ticTacToeGrid[x1][y].x = x1;
                 _ticTacToeGrid[x1][y].y = y;
             }
@@ -55,8 +58,7 @@ public class TicTacToeGrid : MonoBehaviour
     {
         if (Set(x, y, player))
         {
-            GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
-            gameLogic.OnPiecePlaced(x, y, player);
+            _gameLogic.OnPiecePlaced(x, y, player);
         }
     }
 }

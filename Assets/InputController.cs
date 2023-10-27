@@ -41,7 +41,7 @@ public class InputController : MonoBehaviour
                 {
                     if (!slot.IsOccupied)
                     {
-                        GameObject.Find("Grid").GetComponent<TicTacToeGrid>().PlacePiece(slot.x, slot.y, initiator.GetComponent<Player>());
+                        gameLogic.Grid.PlacePiece(slot.x, slot.y, initiator.GetComponent<Player>());
                     }
                 }
                 return true;

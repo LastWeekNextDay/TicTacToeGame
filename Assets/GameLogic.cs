@@ -5,17 +5,20 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
+    private AssetHolder _assetHolder = null;
+
     public bool GameActive = false;
     public Player Player1 = null;
     public Player Player2 = null;
-    public Player Turn;
-    private TicTacToeGrid _grid = null;
+    public Player Turn = null;
+    public TicTacToeGrid Grid = null;
     public VictoryCalculator VictoryCalculator = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        _grid = GameObject.Find("Grid").GetComponent<TicTacToeGrid>();
+        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        Grid = new TicTacToeGrid(_assetHolder, this);
         SetupMultiPlayer(3, 3);
     }
 
@@ -27,9 +30,9 @@ public class GameLogic : MonoBehaviour
 
     void InitializeGame(int gridSize, int winCondition)
     {
-        _grid.SetupGrid(gridSize);
+        Grid.SetupGrid(gridSize);
         Camera.main.GetComponent<CameraScript>().SetupCamera();
-        VictoryCalculator = new VictoryCalculator(_grid, winCondition);
+        VictoryCalculator = new VictoryCalculator(Grid, winCondition);
         RandomizeFirstGoer();
         GameActive = true;
     }
@@ -64,9 +67,8 @@ public class GameLogic : MonoBehaviour
 
     public void SetupSinglePlayer(int size, int winCon) 
     {
-        AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-        GameObject player1 = Instantiate(assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        GameObject player2 = Instantiate(assetHolder.AIPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject player2 = Instantiate(_assetHolder.AIPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         Player1 = player1.GetComponent<Player>();
         Player2 = player2.GetComponent<Player>();
         InitializeGame(size, winCon);
@@ -74,9 +76,8 @@ public class GameLogic : MonoBehaviour
 
     public void SetupMultiPlayer(int size, int winCon)
     {
-        AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-        GameObject player1 = Instantiate(assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        GameObject player2 = Instantiate(assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         Player1 = player1.GetComponent<Player>();
         Player2 = player2.GetComponent<Player>();
         InitializeGame(size, winCon);
