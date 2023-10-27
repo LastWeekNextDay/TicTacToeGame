@@ -9,6 +9,7 @@ public class TicTacToeGrid : MonoBehaviour
     {
 
     }
+
     public void SetupGrid(int x)
     {
         _ticTacToeGrid = new Slot[x][];

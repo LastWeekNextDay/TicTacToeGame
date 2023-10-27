@@ -13,6 +13,22 @@ public class VictoryCalculator
         WinCondition = winCondition;
     }
 
+    public bool GameIsTied()
+    {
+        int x, y;
+        for (x = 0; x < _grid.Size; x++)
+        {
+            for (y = 0; y < _grid.Size; y++)
+            {
+                if (!_grid.Get(x, y).IsOccupied)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public bool ValueHasWon(int x, int y)
     {
         string value = _grid.Get(x, y).Piece();
@@ -29,6 +45,7 @@ public class VictoryCalculator
             }
             for (int x2 = x - 1; x2 <= x + 1; x2++)
             {
+                count = 1;
                 if (x2 < 0 || x2 >= _grid.Size)
                 {
                     continue;

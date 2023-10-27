@@ -23,16 +23,27 @@ public class InputController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
+            if (SlotPiecePlaceAttempt(hit, initiator)) { return; }
+        }
+    }
+
+    bool SlotPiecePlaceAttempt(RaycastHit hit, GameObject initiator)
+    {
+        GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
+        if (gameLogic.GameActive) {
             Slot slot = hit.collider.gameObject.GetComponent<Slot>();
             if (slot != null)
             {
-                GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
-                if (initiator.GetComponent<Player>().Piece != gameLogic.Turn.Piece) { return;}
-                if (!slot.IsOccupied)
+                if (initiator.GetComponent<Player>().Piece == gameLogic.Turn.Piece)
                 {
-                    GameObject.Find("Grid").GetComponent<TicTacToeGrid>().PlacePiece(slot.x, slot.y, initiator.GetComponent<Player>());
+                    if (!slot.IsOccupied)
+                    {
+                        GameObject.Find("Grid").GetComponent<TicTacToeGrid>().PlacePiece(slot.x, slot.y, initiator.GetComponent<Player>());
+                    }
                 }
+                return true;
             }
         }
+        return false;
     }
 }

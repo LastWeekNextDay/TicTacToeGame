@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
-    public bool GameOver = false;
+    public bool GameActive = false;
     public Player Player1 = null;
     public Player Player2 = null;
     public Player Turn;
@@ -16,7 +16,7 @@ public class GameLogic : MonoBehaviour
     void Start()
     {
         _grid = GameObject.Find("Grid").GetComponent<TicTacToeGrid>();
-        SetupMultiPlayer(6, 6);
+        SetupMultiPlayer(3, 3);
     }
 
     // Update is called once per frame
@@ -31,6 +31,7 @@ public class GameLogic : MonoBehaviour
         Camera.main.GetComponent<CameraScript>().SetupCamera();
         VictoryCalculator = new VictoryCalculator(_grid, winCondition);
         RandomizeFirstGoer();
+        GameActive = true;
     }
 
     public void ChangeTurn()
@@ -86,11 +87,15 @@ public class GameLogic : MonoBehaviour
         if (VictoryCalculator.ValueHasWon(x, y))
         {
             Debug.Log("Player " + player.Piece + " has won!");
-            GameOver = true;
+            GameActive = false;
+            return;
         }
-        else
+        if (VictoryCalculator.GameIsTied())
         {
-            ChangeTurn();
+            Debug.Log("Game is tied!");
+            GameActive = false;
+            return;
         }
+        ChangeTurn();
     }
 }
