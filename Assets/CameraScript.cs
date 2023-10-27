@@ -18,6 +18,7 @@ public class CameraScript : MonoBehaviour
 
     public void SetupCamera()
     {
+        // Try and position the camera perpendicular to the grid and somewhere in the middle
         TicTacToeGrid grid = GameObject.Find("Grid").GetComponent<TicTacToeGrid>();
         Vector3 middleSlot = grid.GetComponent<TicTacToeGrid>().Get(grid.GetComponent<TicTacToeGrid>().Size / 2, grid.GetComponent<TicTacToeGrid>().Size / 2).transform.position;
         int size = grid.GetComponent<TicTacToeGrid>().Size;

@@ -15,6 +15,7 @@ public class VictoryCalculator
 
     public bool GameIsTied()
     {
+        // Go through each slot and if at least one is not occupied, return false - Game not tied
         int x, y;
         for (x = 0; x < _grid.Size; x++)
         {
@@ -37,6 +38,7 @@ public class VictoryCalculator
             return false;
         }
         int count = 1;
+        // Check each slot that is adjacent to the provided slot
         for (int y2 = y - 1; y2 <= y + 1; y2++)
         {
             if (y2 < 0 || y2 >= _grid.Size)
@@ -45,6 +47,7 @@ public class VictoryCalculator
             }
             for (int x2 = x - 1; x2 <= x + 1; x2++)
             {
+                // Skip slots that are out of bounds or are at the position of the provided slot
                 count = 1;
                 if (x2 < 0 || x2 >= _grid.Size)
                 {
@@ -54,6 +57,7 @@ public class VictoryCalculator
                 {
                     continue;
                 }
+                // Go forwards along the path of the slot which is occupied by the same value until the end or different value is reached, then do the same backwards
                 if (_grid.Get(x2, y2).Piece() == value)
                 {
                     int delta_x = x2 - x;
@@ -73,6 +77,7 @@ public class VictoryCalculator
 
     int ValuesInARow(int x, int y, int delta_x, int delta_y)
     {
+        // Recurring function to count the number of values in a row in a given direction (delta_x, delta_y) from a given position (x, y)
         if (x >= 0 && x < _grid.Size && y >= 0 && y < _grid.Size)
         {
             if (x + delta_x >= 0 && x + delta_x < _grid.Size && y + delta_y >= 0 && y + delta_y < _grid.Size)

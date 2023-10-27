@@ -19,6 +19,7 @@ public class InputController : MonoBehaviour
 
     public void HandleInput(Vector3 mousePosition, GameObject initiator)
     {
+        // This function will handle the mouse clicks by going through all possible variants of clicks
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         if (Physics.Raycast(ray, out hit))
@@ -29,6 +30,8 @@ public class InputController : MonoBehaviour
 
     bool SlotPiecePlaceAttempt(RaycastHit hit, GameObject initiator)
     {
+        // Attempt to place a piece on a slot, even if unsuccessful, return true if a slot was clicked
+        // However, return false if the game is not active or a slot was not clicked
         GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
         if (gameLogic.GameActive) {
             Slot slot = hit.collider.gameObject.GetComponent<Slot>();

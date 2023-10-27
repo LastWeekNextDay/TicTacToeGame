@@ -12,6 +12,7 @@ public class TicTacToeGrid : MonoBehaviour
 
     public void SetupGrid(int x)
     {
+        // Create the grid of x size
         _ticTacToeGrid = new Slot[x][];
         for (int i = 0; i < x; i++)
         {
