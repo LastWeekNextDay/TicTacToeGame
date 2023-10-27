@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour
@@ -28,7 +29,7 @@ public class GameLogic : MonoBehaviour
         
     }
 
-    void InitializeGame(int gridSize, int winCondition)
+    public void InitializeGame(int gridSize, int winCondition)
     {
         Grid.SetupGrid(gridSize);
         Camera.main.GetComponent<CameraScript>().SetupCamera();
@@ -79,8 +80,9 @@ public class GameLogic : MonoBehaviour
         GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         Player1 = player1.GetComponent<Player>();
+        Player1.AddComponent<Host>();
         Player2 = player2.GetComponent<Player>();
-        InitializeGame(size, winCon);
+        StartCoroutine(Player1.GetComponent<Host>().WaitForSecondClient(size, winCon));
     }
 
     public void OnPiecePlaced(int x, int y, Player player)
