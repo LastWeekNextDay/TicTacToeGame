@@ -80,9 +80,8 @@ public class GameLogic : MonoBehaviour
         GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         Player1 = player1.GetComponent<Player>();
-        Player1.AddComponent<Host>();
         Player2 = player2.GetComponent<Player>();
-        StartCoroutine(Player1.GetComponent<Host>().WaitForSecondClient(size, winCon));
+        InitializeGame(size, winCon);
     }
 
     public void OnPiecePlaced(int x, int y, Player player)
