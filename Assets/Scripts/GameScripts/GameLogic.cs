@@ -21,6 +21,7 @@ public class GameLogic : MonoBehaviour
     {
         //int size = PlayerPrefs.GetInt("GridSize");
         //int winCon = PlayerPrefs.GetInt("WinCondition");
+        //bool multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
         MakeSureAssetHolderIsNotNull();
         if (Multiplayer)
         {
@@ -37,13 +38,17 @@ public class GameLogic : MonoBehaviour
         MakeSureAssetHolderIsNotNull();
     }
 
+    public void SetAssetHolder(AssetHolder assetHolder)
+    {
+        _assetHolder = assetHolder;
+    }
+
     void MakeSureAssetHolderIsNotNull()
     {
         if (_assetHolder == null)
         {
             _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-            Grid = new TicTacToeGrid(_assetHolder, this);
-            VictoryCalculator?.SetGrid(Grid);
+            Grid.SetAssetHolder(_assetHolder);
         }
     }
 
