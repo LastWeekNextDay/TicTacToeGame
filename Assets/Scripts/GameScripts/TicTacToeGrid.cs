@@ -15,6 +15,11 @@ public class TicTacToeGrid
         _gameLogic = gameLogic;
     }
 
+    public void SetAssetHolder(AssetHolder assetHolder)
+    {
+        _assetHolder = assetHolder;
+    }
+
     public void SetupGrid(int size)
     {
         // Create the grid of x size

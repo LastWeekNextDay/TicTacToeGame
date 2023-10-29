@@ -356,6 +356,7 @@ MonoBehaviour:
   SlotObjPrefab: {fileID: 6313827648049171784, guid: 99c77d2e99931d64ca9ca7f265c6c3c0, type: 3}
   AIPlayerObjPrefab: {fileID: 7125032919559617378, guid: 35e548180c0ecdc47b849db39f7cbc10, type: 3}
   HumanPlayerObjPrefab: {fileID: 4428205478497304081, guid: ce832b7a5e363254ba1574099aec43d8, type: 3}
+  NetworkManagerObjPrefab: {fileID: 5958948311435946742, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
 --- !u!4 &1097096720
 Transform:
   m_ObjectHideFlags: 0
@@ -371,103 +372,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1333001412
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1333001415}
-  - component: {fileID: 1333001417}
-  - component: {fileID: 1333001416}
-  m_Layer: 0
-  m_Name: NetworkManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1333001415
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1333001412}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -87.853676, y: 13.622484, z: -54.24116}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1333001416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1333001412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ProtocolType: 0
-  m_MaxPacketQueueSize: 128
-  m_MaxPayloadSize: 6144
-  m_HeartbeatTimeoutMS: 500
-  m_ConnectTimeoutMS: 1000
-  m_MaxConnectAttempts: 60
-  m_DisconnectTimeoutMS: 30000
-  ConnectionData:
-    Address: 127.0.0.1
-    Port: 7777
-    ServerListenAddress: 127.0.0.1
-  DebugSimulator:
-    PacketDelayMS: 0
-    PacketJitterMS: 0
-    PacketDropRate: 0
---- !u!114 &1333001417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1333001412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd0e14a65315a2c4ba30a4297bd015c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkConfig:
-    ProtocolVersion: 0
-    NetworkTransport: {fileID: 1333001416}
-    PlayerPrefab: {fileID: 0}
-    Prefabs:
-      NetworkPrefabsLists: []
-    TickRate: 30
-    ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
-    ConnectionData: 
-    EnableTimeResync: 0
-    TimeResyncInterval: 30
-    EnsureNetworkVariableLengthSafety: 0
-    EnableSceneManagement: 1
-    ForceSamePrefabs: 1
-    RecycleNetworkIds: 1
-    NetworkIdRecycleDelay: 120
-    RpcHashSize: 0
-    LoadSceneTimeOut: 120
-    SpawnTimeout: 1
-    EnableNetworkLogs: 1
-    OldPrefabList: []
-  RunInBackground: 1
-  LogLevel: 1
-  TimeoutTimer: 0
 --- !u!1 &1399268675
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ee337ee39bcce47a9030b037f45cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Multiplayer: 0
   GameActive: 0
   Player1: {fileID: 0}
   Player2: {fileID: 0}
@@ -909,6 +814,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &7360667439704325762
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -87.853676
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 13.622484
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -54.24116
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026618054236422341, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5958948311435946742, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+      propertyPath: m_Name
+      value: NetworkManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -918,7 +880,7 @@ SceneRoots:
   - {fileID: 1502101346}
   - {fileID: 1413358115}
   - {fileID: 1694546112}
-  - {fileID: 1333001415}
+  - {fileID: 7360667439704325762}
   - {fileID: 1399268677}
   - {fileID: 2065810700}
   - {fileID: 1097096720}

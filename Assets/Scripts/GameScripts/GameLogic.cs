@@ -7,7 +7,9 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
     private AssetHolder _assetHolder = null;
+    public GameObject NetworkManager = null;
 
+    public bool Multiplayer = false;
     public bool GameActive = false;
     public Player Player1 = null;
     public Player Player2 = null;
@@ -18,8 +20,17 @@ public class GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //int size = PlayerPrefs.GetInt("GridSize");
+        //int winCon = PlayerPrefs.GetInt("WinCondition");
+        //bool multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
         MakeSureAssetHolderIsNotNull();
-        SetupMultiPlayer(3, 3);
+        if (Multiplayer)
+        {
+            SetupMultiPlayer(3, 3);
+        } else
+        {
+            SetupSinglePlayer(3, 3);
+        }
     }
 
     // Update is called once per frame
@@ -28,12 +39,17 @@ public class GameLogic : MonoBehaviour
         MakeSureAssetHolderIsNotNull();
     }
 
+    public void SetAssetHolder(AssetHolder assetHolder)
+    {
+        _assetHolder = assetHolder;
+    }
+
     void MakeSureAssetHolderIsNotNull()
     {
         if (_assetHolder == null)
         {
             _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-            Grid = new TicTacToeGrid(_assetHolder, this);
+            Grid.SetAssetHolder(_assetHolder);
         }
     }
 
@@ -87,6 +103,10 @@ public class GameLogic : MonoBehaviour
     {
         GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        if (NetworkManager == null)
+        {
+            NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        }
         Player1 = player1.GetComponent<Player>();
         Player2 = player2.GetComponent<Player>();
         InitializeGame(size, winCon);
@@ -94,6 +114,7 @@ public class GameLogic : MonoBehaviour
 
     public void OnPiecePlaced(int x, int y, Player player)
     {
+        Debug.Log("Player " + player.Piece + " placed a piece on " + x + ", " + y);
         if (VictoryCalculator.ValueHasWon(x, y))
         {
             Debug.Log("Player " + player.Piece + " has won!");
