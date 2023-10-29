@@ -18,9 +18,9 @@ public class Multiplayer : NetworkManager
 
     }
 
-    public bool ClientWaitTimedOut(float timeFromLastFram)
+    public bool ClientWaitTimedOut(float timeFromLastFrame)
     {
-        TimeoutTimer += timeFromLastFram;
+        TimeoutTimer += timeFromLastFrame;
         if (TimeoutTimer < 10.0f) { return false; }
         TimeoutTimer = 0.0f;
         return true;
