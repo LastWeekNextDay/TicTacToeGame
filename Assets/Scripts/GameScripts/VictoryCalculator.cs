@@ -61,6 +61,10 @@ public class VictoryCalculator
     }
 
     int ValuesInARow(int xCoordinate, int yCoordinate, int deltaX, int deltaY)
+    public void SetGrid(TicTacToeGrid grid)
+    {
+        _grid = grid;
+    }
     {
         xCoordinate += deltaX;
         yCoordinate += deltaY;
