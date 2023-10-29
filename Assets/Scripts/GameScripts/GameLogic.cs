@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,10 +24,12 @@ public class GameLogic : MonoBehaviour
         //int size = PlayerPrefs.GetInt("GridSize");
         //int winCon = PlayerPrefs.GetInt("WinCondition");
         //bool multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
+        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        Multiplayer = true;
         MakeSureAssetHolderIsNotNull();
         if (Multiplayer)
         {
-            SetupMultiPlayer(3, 3);
+            SetupMultiPlayer1(3, 3);
         } else
         {
             SetupSinglePlayer(3, 3);
@@ -49,7 +52,13 @@ public class GameLogic : MonoBehaviour
         if (_assetHolder == null)
         {
             _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-            Grid.SetAssetHolder(_assetHolder);
+            if (Grid == null)
+            {
+                Grid = new TicTacToeGrid(_assetHolder, this);
+            } else
+            {
+                Grid.SetAssetHolder(_assetHolder);
+            }
         }
     }
 
@@ -99,16 +108,41 @@ public class GameLogic : MonoBehaviour
         InitializeGame(size, winCon);
     }
 
-    public void SetupMultiPlayer(int size, int winCon)
+    public void SetupMultiPlayer1(int size, int winCon)
     {
-        GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         if (NetworkManager == null)
         {
             NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         }
+        GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        player1.AddComponent<PhotonView>();
+        GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        player2.AddComponent<PhotonView>();
         Player1 = player1.GetComponent<Player>();
         Player2 = player2.GetComponent<Player>();
+        
+        StartCoroutine(SetupMultiPlayer2(size, winCon));
+    }
+
+    IEnumerator SetupMultiPlayer2(int size, int winCon)
+    {
+        while (!NetworkManager.GetComponent<Networking>().ConnectedToMaster && !NetworkManager.GetComponent<Networking>().InARoom)
+        {
+            yield return null;
+        }
+        Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetComponent<Networking>().GetPlayer(0));
+        StartCoroutine(SetupMultiPlayer3(size, winCon));
+    }
+
+    IEnumerator SetupMultiPlayer3(int size, int winCon)
+    {
+        while (NetworkManager.GetComponent<Networking>().PlayerCount < 2)
+        {
+            Debug.Log("Waiting for other player to join...");
+            yield return null;
+        }
+        Debug.Log("Other player has joined!");
+        //Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetComponent<Networking>().GetPlayer(1));
         InitializeGame(size, winCon);
     }
 

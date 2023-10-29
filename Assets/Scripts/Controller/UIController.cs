@@ -22,6 +22,7 @@ public class UIController : MonoBehaviour
 
     void UpdateTurnText()
     {
+        if (_gameLogic.Turn == null) { return; }
         turnText.text = "Turn: " + _gameLogic.Turn.ToString();
     }
 }
