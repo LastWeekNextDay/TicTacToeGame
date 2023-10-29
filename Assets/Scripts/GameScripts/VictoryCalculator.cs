@@ -42,10 +42,10 @@ public class VictoryCalculator
                     continue;
                 }
                 // Go forwards along the path of the slot which is occupied by the same value until the end or different value is reached, then do the same backwards
-                int delta_x = xCoordinateToCheck - valueXCoordinate;
-                int delta_y = yCoordinateToCheck - valueYCoordinate;
-                sameValuesInARow += ValuesInARow(valueXCoordinate, valueYCoordinate, delta_x, delta_y);
-                sameValuesInARow += ValuesInARow(valueXCoordinate, valueYCoordinate, -delta_x, -delta_y);
+                int rateOfChangeForX = xCoordinateToCheck - valueXCoordinate;
+                int rateOfChangeForY = yCoordinateToCheck - valueYCoordinate;
+                sameValuesInARow += ValuesInARow(valueXCoordinate, valueYCoordinate, rateOfChangeForX, rateOfChangeForY);
+                sameValuesInARow += ValuesInARow(valueXCoordinate, valueYCoordinate, -rateOfChangeForX, -rateOfChangeForY);
                 if (sameValuesInARow >= WinCondition)
                 {
                     break;
@@ -59,21 +59,21 @@ public class VictoryCalculator
         return false;
     }
 
-    int ValuesInARow(int xCoordinate, int yCoordinate, int changeOfX, int changeOfY)
+    int ValuesInARow(int xCoordinate, int yCoordinate, int rateOfChangeForX, int rateOfChangeForY)
     {
         // Recurring function to count the number of values in a row in a given direction (delta_x, delta_y) from a given position (x, y)
         if (xCoordinate < 0 || 
             xCoordinate >= _grid.Size || 
             yCoordinate < 0 || 
             yCoordinate >= _grid.Size || 
-            xCoordinate + changeOfX < 0 || 
-            xCoordinate + changeOfX >= _grid.Size || 
-            yCoordinate + changeOfY < 0 || 
-            yCoordinate + changeOfY >= _grid.Size || 
-            _grid.Get(xCoordinate, yCoordinate).Piece() != _grid.Get(xCoordinate + changeOfX, yCoordinate + changeOfY).Piece())
+            xCoordinate + rateOfChangeForX < 0 || 
+            xCoordinate + rateOfChangeForX >= _grid.Size || 
+            yCoordinate + rateOfChangeForY < 0 || 
+            yCoordinate + rateOfChangeForY >= _grid.Size || 
+            _grid.Get(xCoordinate, yCoordinate).Piece() != _grid.Get(xCoordinate + rateOfChangeForX, yCoordinate + rateOfChangeForY).Piece())
         {
             return 0;
         }
-        return 1 + ValuesInARow(xCoordinate + changeOfX, yCoordinate + changeOfY, changeOfX, changeOfY);
+        return 1 + ValuesInARow(xCoordinate + rateOfChangeForX, yCoordinate + rateOfChangeForY, rateOfChangeForX, rateOfChangeForY);
     }
 }
