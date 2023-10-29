@@ -353,7 +353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   XObjPrefab: {fileID: 7776948810807917800, guid: e1c9390a74179af4ea6c7070261c277f, type: 3}
   OObjPrefab: {fileID: 3552812325174130649, guid: a39cf18164e9a2c4794e6675ba7887f0, type: 3}
-  SlotObjPrefab: {fileID: 5360666620414039213, guid: 99c77d2e99931d64ca9ca7f265c6c3c0, type: 3}
+  SlotObjPrefab: {fileID: 6313827648049171784, guid: 99c77d2e99931d64ca9ca7f265c6c3c0, type: 3}
   AIPlayerObjPrefab: {fileID: 7125032919559617378, guid: 35e548180c0ecdc47b849db39f7cbc10, type: 3}
   HumanPlayerObjPrefab: {fileID: 4428205478497304081, guid: ce832b7a5e363254ba1574099aec43d8, type: 3}
 --- !u!4 &1097096720

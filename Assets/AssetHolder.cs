@@ -27,11 +27,13 @@ public class AssetHolder : MonoBehaviour
 
     public GameObject Spawn(GameObject prefab, Vector3 position)
     {
+        if (prefab == null) { return null; }
         return Instantiate(prefab, position, prefab.transform.rotation);
     }
 
     public GameObject Spawn(GameObject prefab, Vector3 position, Transform parent)
     {
+        if (prefab == null) { return null; }
         return Instantiate(prefab, position, prefab.transform.rotation, parent);
     }
 }

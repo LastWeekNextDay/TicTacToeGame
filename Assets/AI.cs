@@ -8,10 +8,7 @@ public class AI : Player
     protected override void Start()
     {
         base.Start();
-        if (!AI)
-        {
-            AI = true;
-        }
+        AI = true;
     }
 
     // Update is called once per frame

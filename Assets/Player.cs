@@ -18,7 +18,6 @@ public class Player: MonoBehaviour
         
     }
 
-    // to string
     public override string ToString()
     {
         return Piece;

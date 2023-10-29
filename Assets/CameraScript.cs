@@ -21,8 +21,8 @@ public class CameraScript : MonoBehaviour
         // Try and position the camera perpendicular to the grid and somewhere in the middle
         GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
         TicTacToeGrid grid = gameLogic.Grid;
-        Vector3 middleSlot = grid.Get(grid.Size / 2, grid.Size / 2).transform.position;
         int size = grid.Size;
+        Vector3 middleSlot = grid.Get(grid.Size / 2, grid.Size / 2).transform.position;
         transform.position = new Vector3(middleSlot.x, middleSlot.y + size, middleSlot.z);
     }
 }

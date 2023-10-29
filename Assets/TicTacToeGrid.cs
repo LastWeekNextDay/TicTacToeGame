@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class TicTacToeGrid
@@ -23,30 +24,19 @@ public class TicTacToeGrid
             _ticTacToeGrid[i] = new Slot[x];
         }
         Size = x;
-        for (int x1 = 0; x1 < _ticTacToeGrid.Length; x1++)
-        {
-            for (int y = 0; y < _ticTacToeGrid[x1].Length; y++)
-            {
-                _ticTacToeGrid[x1][y] = _assetHolder.Spawn(_assetHolder.SlotObjPrefab, new Vector3(x1, 0, y)).GetComponent<Slot>();
-                _ticTacToeGrid[x1][y].x = x1;
-                _ticTacToeGrid[x1][y].y = y;
-            }
-        }
+        GoThroughGrid(CreateSlot);
     }
 
-    public void ResetGrid() {        
-        for (int x = 0; x < _ticTacToeGrid.Length; x++)
-        {
-            for (int y = 0; y < _ticTacToeGrid[x].Length; y++)
-            {
-                _ticTacToeGrid[x][y].Clear();
-            }
-        }
+    public bool AllSlotsOccupied() 
+    {         
+        bool allSlotsOccupied = true;
+        GoThroughGrid((x, y) => { if (!_ticTacToeGrid[x][y].IsOccupied) { allSlotsOccupied = false; } });
+        return allSlotsOccupied;
     }
 
-    bool Set(int x, int y, Player player)
+    public void ResetGrid()
     {
-        return _ticTacToeGrid[x][y].AttachPiece(player.Piece);
+        GoThroughGrid(ClearSlot);
     }
 
     public Slot Get(int x, int y)
@@ -56,9 +46,34 @@ public class TicTacToeGrid
 
     public void PlacePiece(int x, int y, Player player)
     {
-        if (Set(x, y, player))
+        if (Set(x, y, player)) { _gameLogic.OnPiecePlaced(x, y, player); }
+    }
+
+    void GoThroughGrid(Action<int,int> action)
+    {
+        for (int x = 0; x < _ticTacToeGrid.Length; x++)
         {
-            _gameLogic.OnPiecePlaced(x, y, player);
+            for (int y = 0; y < _ticTacToeGrid[x].Length; y++)
+            {
+                action(x, y);
+            }
         }
+    }
+
+    void CreateSlot(int x, int y)
+    {
+        _ticTacToeGrid[x][y] = _assetHolder.Spawn(_assetHolder.SlotObjPrefab, new Vector3(x, 0, y)).GetComponent<Slot>();
+        _ticTacToeGrid[x][y].x = x;
+        _ticTacToeGrid[x][y].y = y;
+    }
+
+    void ClearSlot(int x, int y)
+    {
+        _ticTacToeGrid[x][y].Clear();
+    }
+
+    bool Set(int x, int y, Player player)
+    {
+        return _ticTacToeGrid[x][y].AttachPiece(player.Piece);
     }
 }

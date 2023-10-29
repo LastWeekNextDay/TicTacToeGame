@@ -11,10 +11,7 @@ public class Human : Player
     protected override void Start()
     {
         base.Start();
-        if (AI)
-        {
-            AI = false;
-        }
+        AI = false;
         _inputController = GameObject.Find("InputController").GetComponent<InputController>();
         _networkObject = GetComponent<NetworkObject>();
     }

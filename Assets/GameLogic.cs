@@ -18,15 +18,23 @@ public class GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-        Grid = new TicTacToeGrid(_assetHolder, this);
+        MakeSureAssetHolderIsNotNull();
         SetupMultiPlayer(3, 3);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        MakeSureAssetHolderIsNotNull();
+    }
+
+    void MakeSureAssetHolderIsNotNull()
+    {
+        if (_assetHolder == null)
+        {
+            _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+            Grid = new TicTacToeGrid(_assetHolder, this);
+        }
     }
 
     public void InitializeGame(int gridSize, int winCondition)

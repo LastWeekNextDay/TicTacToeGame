@@ -21,12 +21,9 @@ public class Multiplayer : NetworkManager
     public bool ClientWaitTimedOut(float timeFromLastFram)
     {
         TimeoutTimer += timeFromLastFram;
-        if (TimeoutTimer > 10.0f)
-        {
-            TimeoutTimer = 0.0f;
-            return true;
-        }
-        return false;
+        if (TimeoutTimer < 10.0f) { return false; }
+        TimeoutTimer = 0.0f;
+        return true;
     }
 
     //public IEnumerator WaitForSecondClient(int size, int winCon)
