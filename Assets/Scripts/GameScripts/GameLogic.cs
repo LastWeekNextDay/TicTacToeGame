@@ -8,6 +8,7 @@ public class GameLogic : MonoBehaviour
 {
     private AssetHolder _assetHolder = null;
 
+    public bool Multiplayer = false;
     public bool GameActive = false;
     public Player Player1 = null;
     public Player Player2 = null;
@@ -18,8 +19,16 @@ public class GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //int size = PlayerPrefs.GetInt("GridSize");
+        //int winCon = PlayerPrefs.GetInt("WinCondition");
         MakeSureAssetHolderIsNotNull();
-        SetupMultiPlayer(3, 3);
+        if (Multiplayer)
+        {
+            SetupMultiPlayer(3, 3);
+        } else
+        {
+            SetupSinglePlayer(3, 3);
+        }
     }
 
     // Update is called once per frame
