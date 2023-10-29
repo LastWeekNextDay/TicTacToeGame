@@ -43,6 +43,7 @@ public class GameLogic : MonoBehaviour
         {
             _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
             Grid = new TicTacToeGrid(_assetHolder, this);
+            VictoryCalculator?.SetGrid(Grid);
         }
     }
 
@@ -103,6 +104,7 @@ public class GameLogic : MonoBehaviour
 
     public void OnPiecePlaced(int x, int y, Player player)
     {
+        Debug.Log("Player " + player.Piece + " placed a piece on " + x + ", " + y);
         if (VictoryCalculator.ValueHasWon(x, y))
         {
             Debug.Log("Player " + player.Piece + " has won!");
