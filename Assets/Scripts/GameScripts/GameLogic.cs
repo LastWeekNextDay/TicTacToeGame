@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
     private AssetHolder _assetHolder = null;
-    private GameObject _networkManager = null;
+    public GameObject NetworkManager = null;
 
     public bool Multiplayer = false;
     public bool GameActive = false;
@@ -103,9 +103,9 @@ public class GameLogic : MonoBehaviour
     {
         GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        if (_networkManager == null)
+        if (NetworkManager == null)
         {
-            _networkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         }
         Player1 = player1.GetComponent<Player>();
         Player2 = player2.GetComponent<Player>();
