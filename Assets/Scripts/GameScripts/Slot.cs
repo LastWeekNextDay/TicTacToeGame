@@ -39,10 +39,10 @@ public class Slot : MonoBehaviour
         AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
         if (!IsOccupied)
         {
-            Vector3 pos = transform.position;
-            pos += new Vector3(0, 0.1f, 0);
-            if (piece == "X") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.XObjPrefab, pos, transform); }
-            if (piece == "O") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.OObjPrefab, pos, transform); }
+            Vector3 spawnPosition = transform.position;
+            spawnPosition += new Vector3(0, 0.1f, 0);
+            if (piece == "X") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.XObjPrefab, spawnPosition, transform); }
+            if (piece == "O") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.OObjPrefab, spawnPosition, transform); }
         }
         if (_pieceObjectAttached != null) { IsOccupied = true; }
         return IsOccupied;

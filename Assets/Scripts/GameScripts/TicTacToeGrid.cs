@@ -15,22 +15,22 @@ public class TicTacToeGrid
         _gameLogic = gameLogic;
     }
 
-    public void SetupGrid(int x)
+    public void SetupGrid(int size)
     {
         // Create the grid of x size
-        _ticTacToeGrid = new Slot[x][];
-        for (int i = 0; i < x; i++)
+        _ticTacToeGrid = new Slot[size][];
+        for (int xCoordinate = 0; xCoordinate < size; xCoordinate++)
         {
-            _ticTacToeGrid[i] = new Slot[x];
+            _ticTacToeGrid[xCoordinate] = new Slot[size];
         }
-        Size = x;
+        Size = size;
         GoThroughGrid(CreateSlot);
     }
 
     public bool AllSlotsOccupied() 
     {         
         bool allSlotsOccupied = true;
-        GoThroughGrid((x, y) => { if (!_ticTacToeGrid[x][y].IsOccupied) { allSlotsOccupied = false; } });
+        GoThroughGrid((xCoordinate, yCoordinate) => { if (!_ticTacToeGrid[xCoordinate][yCoordinate].IsOccupied) { allSlotsOccupied = false; } });
         return allSlotsOccupied;
     }
 
@@ -39,14 +39,14 @@ public class TicTacToeGrid
         GoThroughGrid(ClearSlot);
     }
 
-    public Slot Get(int x, int y)
+    public Slot Get(int xCoordinate, int yCoordinate)
     {
-        return _ticTacToeGrid[x][y];
+        return _ticTacToeGrid[xCoordinate][yCoordinate];
     }
 
-    public void PlacePiece(int x, int y, Player player)
+    public void PlacePiece(int xCoordinate, int yCoordinate, Player player)
     {
-        if (Set(x, y, player)) { _gameLogic.OnPiecePlaced(x, y, player); }
+        if (Set(xCoordinate, yCoordinate, player)) { _gameLogic.OnPiecePlaced(xCoordinate, yCoordinate, player); }
     }
 
     void GoThroughGrid(Action<int,int> action)
