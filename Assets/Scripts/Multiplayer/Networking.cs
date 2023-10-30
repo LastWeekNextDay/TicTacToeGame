@@ -13,6 +13,18 @@ using System.Net.Http;
 public class Networking : MonoBehaviourPunCallbacks
 {
     public bool ConnectedToMaster = false;
+    private int _IDToAssign = 0;
+    public int CurrentID
+    {
+        get
+        {
+            if (_IDToAssign > 1)
+            {
+                _IDToAssign = 0;
+            }
+            return _IDToAssign++;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -92,7 +104,7 @@ public class Networking : MonoBehaviourPunCallbacks
     void HostOrConnect()
     {
         //bool host = PlayerPrefs.GetInt("Host") == 1;
-        bool host = true;
+        bool host = false;
         if (host)
         {
             HostGame();
@@ -127,6 +139,10 @@ public class Networking : MonoBehaviourPunCallbacks
         {
             Debug.Log("Waiting for other player to join...");
             yield return null;
+        }
+        foreach (var player in PhotonNetwork.CurrentRoom.Players)
+        {
+            Debug.Log("Player " + player.Value.NickName + " joined room " + PhotonNetwork.CurrentRoom.Name);
         }
     }
 

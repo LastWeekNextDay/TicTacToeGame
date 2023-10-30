@@ -137,6 +137,8 @@ public class GameLogic : MonoBehaviour
     {
         Player player = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Player>();
         player.gameObject.AddComponent<PhotonView>();
+        player.gameObject.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Takeover;
+        player.gameObject.GetComponent<PhotonView>().ViewID = NetworkManager.CurrentID;
         return player;
     }
 
