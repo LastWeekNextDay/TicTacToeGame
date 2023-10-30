@@ -8,7 +8,7 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
     private AssetHolder _assetHolder = null;
-    public GameObject NetworkManager = null;
+    public Networking NetworkManager = null;
 
     public bool Multiplayer = false;
     public bool GameActive = false;
@@ -25,6 +25,7 @@ public class GameLogic : MonoBehaviour
         //int winCon = PlayerPrefs.GetInt("WinCondition");
         //bool multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
         _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        Grid = new TicTacToeGrid(_assetHolder, this);
         Multiplayer = true;
         MakeSureAssetHolderIsNotNull();
         if (Multiplayer)
@@ -73,14 +74,7 @@ public class GameLogic : MonoBehaviour
 
     public void ChangeTurn()
     {
-        if (Turn == Player1)
-        {
-            Turn = Player2;
-        }
-        else
-        {
-            Turn = Player1;
-        }
+        Turn = (Turn == Player1) ? Player2 : Player1;
     }
 
     void RandomizeFirstGoer() {        
@@ -101,10 +95,8 @@ public class GameLogic : MonoBehaviour
 
     public void SetupSinglePlayer(int size, int winCon) 
     {
-        GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        GameObject player2 = Instantiate(_assetHolder.AIPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        Player1 = player1.GetComponent<Player>();
-        Player2 = player2.GetComponent<Player>();
+        Player1 = CreatePlayerSP(_assetHolder.HumanPlayerObjPrefab);
+        Player2 = CreatePlayerSP(_assetHolder.AIPlayerObjPrefab);
         InitializeGame(size, winCon);
     }
 
@@ -112,38 +104,40 @@ public class GameLogic : MonoBehaviour
     {
         if (NetworkManager == null)
         {
-            NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
         }
-        GameObject player1 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        player1.AddComponent<PhotonView>();
-        GameObject player2 = Instantiate(_assetHolder.HumanPlayerObjPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        player2.AddComponent<PhotonView>();
-        Player1 = player1.GetComponent<Player>();
-        Player2 = player2.GetComponent<Player>();
+        Player1 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
+        Player2 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
         
         StartCoroutine(SetupMultiPlayer2(size, winCon));
     }
 
     IEnumerator SetupMultiPlayer2(int size, int winCon)
     {
-        while (!NetworkManager.GetComponent<Networking>().ConnectedToMaster && !NetworkManager.GetComponent<Networking>().InARoom)
-        {
-            yield return null;
-        }
-        Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetComponent<Networking>().GetPlayer(0));
+        yield return NetworkManager.RoomConnectionInitialization();
+        Debug.Log("Host has joined!");
+        Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(0));
         StartCoroutine(SetupMultiPlayer3(size, winCon));
     }
 
     IEnumerator SetupMultiPlayer3(int size, int winCon)
     {
-        while (NetworkManager.GetComponent<Networking>().PlayerCount < 2)
-        {
-            Debug.Log("Waiting for other player to join...");
-            yield return null;
-        }
+        yield return NetworkManager.WaitForSecondPlayer();
         Debug.Log("Other player has joined!");
-        //Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetComponent<Networking>().GetPlayer(1));
+        Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(1));
         InitializeGame(size, winCon);
+    }
+
+    Player CreatePlayerSP(GameObject prefab)
+    {
+        return Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Player>();
+    }
+
+    Player CreatePlayerMP(GameObject prefab)
+    {
+        Player player = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Player>();
+        player.gameObject.AddComponent<PhotonView>();
+        return player;
     }
 
     public void OnPiecePlaced(int x, int y, Player player)

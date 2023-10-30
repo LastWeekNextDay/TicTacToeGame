@@ -12,21 +12,13 @@ using System.Net.Http;
 
 public class Networking : MonoBehaviourPunCallbacks
 {
-    public int PlayerCount = 0;
     public bool ConnectedToMaster = false;
-    public bool InARoom = false;
     // Start is called before the first frame update
     void Start()
     {
+        PhotonNetwork.GameVersion = "0.0.1";
         PhotonNetwork.ConnectUsingSettings();
         StartCoroutine(WaitForMaster());
-        UpdatePlayerCount();
-        UpdateRoomStatus();
-    }
-
-    private void UpdateRoomStatus()
-    {
-        InARoom = PhotonNetwork.InRoom;
     }
 
     // Update is called once per frame
@@ -38,25 +30,56 @@ public class Networking : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
+        Debug.Log("Connected to master");
         ConnectedToMaster = true;
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        base.OnDisconnected(cause);
+        ConnectedToMaster = false;
+        Debug.Log("Disconnected from server for reason " + cause.ToString());
     }
 
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
         Debug.Log("Created Room " + PhotonNetwork.CurrentRoom.Name);
+        //PhotonNetwork.JoinRoom(PhotonNetwork.CurrentRoom.Name);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        Debug.Log("Joined Room " + PhotonNetwork.CurrentRoom.Name);
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        base.OnCreateRoomFailed(returnCode, message);
+        Debug.Log("Failed to create room: " + message);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        base.OnJoinRoomFailed(returnCode, message);
+        Debug.Log("Failed to join room: " + message);
+    }
+
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        Debug.Log("Player " + newPlayer.NickName + " joined room " + PhotonNetwork.CurrentRoom.Name);
     }
 
     public Photon.Realtime.Player GetPlayer(int playerNumber)
     {
-        return PhotonNetwork.PlayerList[playerNumber];
-    }
-    void UpdatePlayerCount()
-    {
-        if (PhotonNetwork.CurrentRoom != null)
+        if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.Players.TryGetValue(playerNumber, out var player))
         {
-            PlayerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+            return player;
         }
+        return null;
+
     }
 
     IEnumerator WaitForMaster() {         
@@ -79,11 +102,39 @@ public class Networking : MonoBehaviourPunCallbacks
         }
     }
 
+    public IEnumerator RoomConnectionInitialization()
+    {
+        while (!ConnectedToMaster)
+        {
+            Debug.Log("Waiting to connect to master...");
+            yield return null;
+        }
+        while (!PhotonNetwork.InRoom)
+        {
+            Debug.Log("Waiting to connect to room...");
+            yield return null;
+        }
+        while (PhotonNetwork.CurrentRoom.PlayerCount < 1)
+        {
+            Debug.Log("Waiting for host to join room...");
+            yield return null;
+        }
+    }
+
+    public IEnumerator WaitForSecondPlayer()
+    {
+        while (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+        {
+            Debug.Log("Waiting for other player to join...");
+            yield return null;
+        }
+    }
+
     void HostGame()
     {
         // string name = PlayerPrefs.GetString("HostName");
         string name = "test";
-        PhotonNetwork.CreateRoom(name, new RoomOptions { MaxPlayers = 2 });
+        PhotonNetwork.CreateRoom(name, new RoomOptions { MaxPlayers = 2, IsVisible = true });
     }
 
     void JoinGame()
