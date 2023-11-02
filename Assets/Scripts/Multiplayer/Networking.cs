@@ -151,9 +151,9 @@ public class Networking : MonoBehaviourPunCallbacks
         photonView.RPC("ReceiveGameLogicViewID", RpcTarget.Others, viewID);
     }
 
-    public void SendPlayerInfo(int playerViewId, string multiplayerType)
+    public void SendPlayerInfo(string multiplayerType)
     {
-        photonView.RPC("ReceivePlayer", RpcTarget.Others, playerViewId, multiplayerType);
+        photonView.RPC("ReceivePlayer", RpcTarget.All, multiplayerType);
     }
 
     [PunRPC]
@@ -163,18 +163,16 @@ public class Networking : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void ReceivePlayer(int playerViewId, string multiplayerType)
+    public void ReceivePlayer(string multiplayerType)
     {
         if (multiplayerType == "Host")
         {
             GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
             gameLogic.MPPlayerCreation(multiplayerType);
-            gameLogic.Player1.gameObject.GetComponent<PhotonView>().ViewID = playerViewId;
         } else
         {
             GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
             gameLogic.MPPlayerCreation(multiplayerType);
-            gameLogic.Player2.gameObject.GetComponent<PhotonView>().ViewID = playerViewId;
         }
     }
 }

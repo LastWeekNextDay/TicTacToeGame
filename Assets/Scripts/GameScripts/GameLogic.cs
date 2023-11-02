@@ -146,16 +146,7 @@ public class GameLogic : MonoBehaviour
             Grid = new TicTacToeGrid(_assetHolder, this);
             Debug.Log("Grid size: " + SessionInfo.Instance.GridSize + ", Win condition: " + SessionInfo.Instance.WinCondition);
         }
-        MPPlayerCreation(SessionInfo.Instance.MultiplayerType);
-        int viewID = 0;
-        if (SessionInfo.Instance.MultiplayerType == "Host")
-        {
-            viewID = Player1.GetComponent<PhotonView>().ViewID;
-        } else
-        {
-            viewID = Player2.GetComponent<PhotonView>().ViewID;
-        }
-        NetworkManager.SendPlayerInfo(viewID, SessionInfo.Instance.MultiplayerType);
+        NetworkManager.SendPlayerInfo(SessionInfo.Instance.MultiplayerType);
         while (Player1 == null || Player2 == null)
         {
             Debug.Log("Waiting for players to be set...");
