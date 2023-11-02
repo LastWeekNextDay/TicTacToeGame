@@ -29,9 +29,9 @@ public class GameLogic : MonoBehaviour
             if (NetworkManager == null)
             {
                 NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
+                NetworkManager.GetComponent<PhotonView>().ViewID = 1;
             }
             this.AddComponent<PhotonView>();
-            PhotonNetwork.AllocateViewID(this.GetComponent<PhotonView>());
             StartCoroutine(SetupMultiPlayer());
             
         } else
@@ -97,19 +97,32 @@ public class GameLogic : MonoBehaviour
     {
         yield return NetworkManager.RoomConnectionInitialization();
         Debug.Log("Host has joined!");
-        yield return NetworkManager.WaitForSecondPlayer();
-        Debug.Log("Other player has joined!");
         int size = -1;
         int winCon = -1;
+
         if (SessionInfo.Instance.MultiplayerType == "Host")
         {
             size = SessionInfo.Instance.GridSize;
             winCon = SessionInfo.Instance.WinCondition;
+            while (this.GetComponent<PhotonView>().ViewID < 1)
+            {
+                PhotonNetwork.AllocateViewID(this.GetComponent<PhotonView>());
+                Debug.Log("Waiting for view ID to be allocated...");
+                yield return null;
+            }
+        }
+        yield return NetworkManager.WaitForSecondPlayer();
+        Debug.Log("Other player has joined!");
+        if (SessionInfo.Instance.MultiplayerType == "Host")
+        {
             ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
             customProperties["GridSize"] = size;
             customProperties["WinCondition"] = winCon;
+            Debug.Log("Game Logic View ID: " + this.GetComponent<PhotonView>().ViewID);
+            customProperties["GameLogicViewID"] = this.GetComponent<PhotonView>().ViewID;
             PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
             Grid = new TicTacToeGrid(_assetHolder, this);
+            NetworkManager.SendGameLogicViewIDToClient(this.GetComponent<PhotonView>().ViewID);
         }
         else if (SessionInfo.Instance.MultiplayerType == "Join")
         {
@@ -120,6 +133,11 @@ public class GameLogic : MonoBehaviour
             while (PhotonNetwork.CurrentRoom.CustomProperties["GridSize"] == null && PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"] == null)
             {
                 Debug.Log("Waiting for grid size and win condition to be set...");
+                yield return null;
+            }
+            while (PhotonNetwork.CurrentRoom.CustomProperties["GameLogicViewID"] == null || this.GetComponent<PhotonView>().ViewID != (int)PhotonNetwork.CurrentRoom.CustomProperties["GameLogicViewID"])
+            {
+                Debug.Log("Waiting for game logic to synchronize...");
                 yield return null;
             }
             size = (int)PhotonNetwork.CurrentRoom.CustomProperties["GridSize"];

@@ -145,4 +145,15 @@ public class Networking : MonoBehaviourPunCallbacks
         string name = "test";
         PhotonNetwork.JoinRoom(name);
     }
+
+    public void SendGameLogicViewIDToClient(int viewID)
+    {
+        photonView.RPC("ReceiveGameLogicViewID", RpcTarget.Others, viewID);
+    }
+
+    [PunRPC]
+    public void ReceiveGameLogicViewID(int viewID)
+    {
+        GameObject.Find("GameLogic").GetComponent<PhotonView>().ViewID = viewID;
+    }
 }
