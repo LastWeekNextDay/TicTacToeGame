@@ -1694,7 +1694,6 @@ MonoBehaviour:
   mainMenu: {fileID: 104831132}
   singlePlayer: {fileID: 833974224}
   multiPlayer: {fileID: 1197440523}
-  options: {fileID: 0}
   host: {fileID: 2055520558}
   join: {fileID: 1827683414}
 --- !u!1 &609916089
@@ -6465,7 +6464,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1827683415
 RectTransform:
   m_ObjectHideFlags: 0
