@@ -95,8 +95,8 @@ public class GameLogic : MonoBehaviour
 
     public void SetupSinglePlayer(int size, int winCon) 
     {
-        Player1 = CreatePlayerSP(_assetHolder.HumanPlayerObjPrefab);
-        Player2 = CreatePlayerSP(_assetHolder.AIPlayerObjPrefab);
+        Player1 = CreatePlayer(_assetHolder.HumanPlayerObjPrefab);
+        Player2 = CreatePlayer(_assetHolder.AIPlayerObjPrefab);
         InitializeGame(size, winCon);
     }
 
@@ -104,7 +104,7 @@ public class GameLogic : MonoBehaviour
     {
         yield return NetworkManager.RoomConnectionInitialization();
         Debug.Log("Host has joined!");
-        Player1 = CreatePlayerMP(_assetHolder.HumanPlayerMPObjPrefab);
+        Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
         Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(0));
         StartCoroutine(SetupMultiPlayer2());
     }
@@ -113,7 +113,7 @@ public class GameLogic : MonoBehaviour
     {
         yield return NetworkManager.WaitForSecondPlayer();
         Debug.Log("Other player has joined!");
-        Player2 = CreatePlayerMP(_assetHolder.HumanPlayerMPObjPrefab);
+        Player2 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
         Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(1));
         int size = -1;
         int winCon = -1;
@@ -148,16 +148,9 @@ public class GameLogic : MonoBehaviour
         InitializeGame(SessionInfo.Instance.GridSize, SessionInfo.Instance.WinCondition);
     }
 
-    Player CreatePlayerSP(GameObject prefab)
+    Player CreatePlayer(GameObject prefab)
     {
         return _assetHolder.Spawn(prefab, Vector3.zero).GetComponent<Player>();
-    }
-
-    Player CreatePlayerMP(GameObject prefab)
-    {
-        Player player = _assetHolder.Spawn(prefab, Vector3.zero).GetComponent<Player>();
-        player.gameObject.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Takeover;
-        return player;
     }
 
     public void OnPiecePlaced(int x, int y, Player player)
