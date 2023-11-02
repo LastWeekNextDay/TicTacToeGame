@@ -67,10 +67,10 @@ public class GameLogic : MonoBehaviour
     public void ChangeTurn()
     {
         Turn = (Turn == Player1) ? Player2 : Player1;
-        //if (SessionInfo.Instance.Multiplayer)
-        //{
-        //    NetworkManager.ChangeTurnTo(Turn.GetComponent<PhotonView>().ViewID);
-        //}
+        if (SessionInfo.Instance.Multiplayer)
+        {
+            NetworkManager.ChangeTurnTo(Turn.GetComponent<PhotonView>().ViewID);
+        }
         OnChangeTurn();
     }
 
