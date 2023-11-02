@@ -24,15 +24,17 @@ public class GameLogic : MonoBehaviour
         //int size = PlayerPrefs.GetInt("GridSize");
         //int winCon = PlayerPrefs.GetInt("WinCondition");
         Multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
+        int size = PlayerPrefs.GetInt("GridSize");
+        int winCon = PlayerPrefs.GetInt("WinCondition");
         _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
         Grid = new TicTacToeGrid(_assetHolder, this);
         MakeSureAssetHolderIsNotNull();
         if (Multiplayer)
         {
-            SetupMultiPlayer1(3, 3);
+            SetupMultiPlayer1(size, winCon);
         } else
         {
-            SetupSinglePlayer(3, 3);
+            SetupSinglePlayer(size, winCon);
         }
     }
 

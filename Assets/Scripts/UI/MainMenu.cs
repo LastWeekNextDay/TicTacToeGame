@@ -19,6 +19,8 @@ public class MainMenu : MonoBehaviour
     public void HostGame()
     {
         PlayerPrefs.SetInt("MultiPlayer", 1);
+        PlayerPrefs.SetInt("GridSize", 3);
+        PlayerPrefs.SetInt("WinCondition", 3);
         PlayerPrefs.SetString("MultiPlayer", "Host");
         StartGame();
     }
