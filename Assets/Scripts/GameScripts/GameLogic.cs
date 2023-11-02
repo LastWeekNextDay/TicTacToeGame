@@ -158,11 +158,10 @@ public class GameLogic : MonoBehaviour
 
     void MPPlayerCreation()
     {
-        if (Player1 == null)
+        if (SessionInfo.Instance.MultiplayerType == "Host")
         {
             Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
-        }
-        else
+        } else
         {
             Player2 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
         }
