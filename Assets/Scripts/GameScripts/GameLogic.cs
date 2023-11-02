@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour
@@ -134,12 +133,23 @@ public class GameLogic : MonoBehaviour
         }
         else if (SessionInfo.Instance.MultiplayerType == "Join")
         {
+            while (PhotonNetwork.CurrentRoom == null) {                 
+                Debug.Log("Waiting for current room to be set...");
+                yield return null;
+            }
+            while (PhotonNetwork.CurrentRoom.CustomProperties["GridSize"] == null && PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"] == null)
+            {
+                Debug.Log("Waiting for grid size and win condition to be set...");
+                yield return null;
+            }
             size = (int)PhotonNetwork.CurrentRoom.CustomProperties["GridSize"];
             SessionInfo.Instance.GridSize = size;
             winCon = (int)PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"];
             SessionInfo.Instance.WinCondition = winCon;
+            Grid = new TicTacToeGrid(_assetHolder, this);
+            Debug.Log("Grid size: " + SessionInfo.Instance.GridSize + ", Win condition: " + SessionInfo.Instance.WinCondition);
         }
-        InitializeGame(size, winCon);
+        InitializeGame(SessionInfo.Instance.GridSize, SessionInfo.Instance.WinCondition);
     }
 
     Player CreatePlayerSP(GameObject prefab)
