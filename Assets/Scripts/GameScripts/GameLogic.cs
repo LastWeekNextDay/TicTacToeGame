@@ -10,7 +10,6 @@ public class GameLogic : MonoBehaviour
     private AssetHolder _assetHolder = null;
     public Networking NetworkManager = null;
 
-    public bool Multiplayer = false;
     public bool GameActive = false;
     public Player Player1 = null;
     public Player Player2 = null;
@@ -21,26 +20,32 @@ public class GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //int size = PlayerPrefs.GetInt("GridSize");
-        //int winCon = PlayerPrefs.GetInt("WinCondition");
-        Multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
-        if (Multiplayer)
+        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        int size = -1;
+        int winCon = -1;
+        if (SessionInfo.Instance.Multiplayer)
         {
             if (NetworkManager == null)
             {
                 NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
             }
-        }
-        int size = PlayerPrefs.GetInt("GridSize");
-        int winCon = PlayerPrefs.GetInt("WinCondition");
-        _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-        Grid = new TicTacToeGrid(_assetHolder, this);
-        MakeSureAssetHolderIsNotNull();
-        if (Multiplayer)
-        {
+            if (SessionInfo.Instance.MultiplayerType == "Host")
+            {
+                size = SessionInfo.Instance.GridSize;
+                winCon = SessionInfo.Instance.WinCondition;
+                Grid = new TicTacToeGrid(_assetHolder, this);
+            }
+            else if (SessionInfo.Instance.MultiplayerType == "Join")
+            {
+                size = Grid.Size;
+                winCon = VictoryCalculator.WinCondition;
+            }
             SetupMultiPlayer1(size, winCon);
         } else
         {
+            size = SessionInfo.Instance.GridSize;
+            winCon = SessionInfo.Instance.WinCondition;
+            Grid = new TicTacToeGrid(_assetHolder, this);
             SetupSinglePlayer(size, winCon);
         }
     }
@@ -48,27 +53,12 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MakeSureAssetHolderIsNotNull();
+
     }
 
     public void SetAssetHolder(AssetHolder assetHolder)
     {
         _assetHolder = assetHolder;
-    }
-
-    void MakeSureAssetHolderIsNotNull()
-    {
-        if (_assetHolder == null)
-        {
-            _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
-            if (Grid == null)
-            {
-                Grid = new TicTacToeGrid(_assetHolder, this);
-            } else
-            {
-                Grid.SetAssetHolder(_assetHolder);
-            }
-        }
     }
 
     public void InitializeGame(int gridSize, int winCondition)
@@ -83,6 +73,7 @@ public class GameLogic : MonoBehaviour
     public void ChangeTurn()
     {
         Turn = (Turn == Player1) ? Player2 : Player1;
+        OnChangeTurn();
     }
 
     void RandomizeFirstGoer() {        
@@ -98,6 +89,14 @@ public class GameLogic : MonoBehaviour
             Turn = Player2;
             Player2.Piece = "X";
             Player1.Piece = "O";
+        }
+    }
+
+    public void OnChangeTurn()
+    {
+        if (!SessionInfo.Instance.Multiplayer)
+        {
+            Player2.GetComponent<AI>().Reset();
         }
     }
 

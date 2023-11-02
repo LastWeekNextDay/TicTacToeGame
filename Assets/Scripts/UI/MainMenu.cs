@@ -12,23 +12,25 @@ public class MainMenu : MonoBehaviour
 
     public void SinglePlayer()
     {
-        PlayerPrefs.SetInt("MultiPlayer", 0);
+        SessionInfo.Instance.Multiplayer = false;
+        SessionInfo.Instance.GridSize = 3;
+        SessionInfo.Instance.WinCondition = 3;
         StartGame();
     }
 
     public void HostGame()
     {
-        PlayerPrefs.SetInt("MultiPlayer", 1);
-        PlayerPrefs.SetInt("GridSize", 3);
-        PlayerPrefs.SetInt("WinCondition", 3);
-        PlayerPrefs.SetString("MultiPlayer", "Host");
+        SessionInfo.Instance.Multiplayer = true;
+        SessionInfo.Instance.GridSize = 3;
+        SessionInfo.Instance.WinCondition = 3;
+        SessionInfo.Instance.MultiplayerType = "Host";
         StartGame();
     }
 
     public void JoinGame()
     {
-        PlayerPrefs.SetInt("MultiPlayer", 1);
-        PlayerPrefs.SetString("MultiPlayer", "Join");
+        SessionInfo.Instance.Multiplayer = true;
+        SessionInfo.Instance.MultiplayerType = "Join";
         StartGame();
     }
 
