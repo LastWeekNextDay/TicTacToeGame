@@ -24,6 +24,7 @@ public class GameLogic : MonoBehaviour
         _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
         int size = -1;
         int winCon = -1;
+        Grid = new TicTacToeGrid(_assetHolder, this);
         if (SessionInfo.Instance.Multiplayer)
         {
             if (NetworkManager == null)
@@ -39,7 +40,6 @@ public class GameLogic : MonoBehaviour
         {
             size = SessionInfo.Instance.GridSize;
             winCon = SessionInfo.Instance.WinCondition;
-            Grid = new TicTacToeGrid(_assetHolder, this);
             SetupSinglePlayer(size, winCon);
         }
     }
