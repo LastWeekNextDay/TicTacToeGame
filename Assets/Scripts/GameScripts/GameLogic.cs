@@ -29,6 +29,7 @@ public class GameLogic : MonoBehaviour
             {
                 NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
             }
+            SetupMultiPlayer1(size, winCon);
             if (SessionInfo.Instance.MultiplayerType == "Host")
             {
                 size = SessionInfo.Instance.GridSize;
@@ -40,7 +41,6 @@ public class GameLogic : MonoBehaviour
                 size = Grid.Size;
                 winCon = VictoryCalculator.WinCondition;
             }
-            SetupMultiPlayer1(size, winCon);
         } else
         {
             size = SessionInfo.Instance.GridSize;
@@ -73,7 +73,7 @@ public class GameLogic : MonoBehaviour
     public void ChangeTurn()
     {
         Turn = (Turn == Player1) ? Player2 : Player1;
-        OnChangeTurn();
+
     }
 
     void RandomizeFirstGoer() {        
