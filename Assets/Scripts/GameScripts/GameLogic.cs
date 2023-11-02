@@ -31,7 +31,8 @@ public class GameLogic : MonoBehaviour
                 NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
             }
             this.AddComponent<PhotonView>();
-            SetupMultiPlayer1();
+            PhotonNetwork.AllocateViewID(this.GetComponent<PhotonView>());
+            StartCoroutine(SetupMultiPlayer1());
             
         } else
         {
@@ -99,26 +100,20 @@ public class GameLogic : MonoBehaviour
         InitializeGame(size, winCon);
     }
 
-    public void SetupMultiPlayer1()
+    IEnumerator SetupMultiPlayer1()
     {
-        Player1 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
-        Player2 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
-        
+        yield return NetworkManager.RoomConnectionInitialization();
+        Debug.Log("Host has joined!");
+        Player1 = CreatePlayerMP(_assetHolder.HumanPlayerMPObjPrefab);
+        Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(0));
         StartCoroutine(SetupMultiPlayer2());
     }
 
     IEnumerator SetupMultiPlayer2()
     {
-        yield return NetworkManager.RoomConnectionInitialization();
-        Debug.Log("Host has joined!");
-        Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(0));
-        StartCoroutine(SetupMultiPlayer3());
-    }
-
-    IEnumerator SetupMultiPlayer3()
-    {
         yield return NetworkManager.WaitForSecondPlayer();
         Debug.Log("Other player has joined!");
+        Player2 = CreatePlayerMP(_assetHolder.HumanPlayerMPObjPrefab);
         Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(1));
         int size = -1;
         int winCon = -1;
@@ -155,12 +150,12 @@ public class GameLogic : MonoBehaviour
 
     Player CreatePlayerSP(GameObject prefab)
     {
-        return Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Player>();
+        return _assetHolder.Spawn(prefab, Vector3.zero).GetComponent<Player>();
     }
 
     Player CreatePlayerMP(GameObject prefab)
     {
-        Player player = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Player>();
+        Player player = _assetHolder.Spawn(prefab, Vector3.zero).GetComponent<Player>();
         player.gameObject.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Takeover;
         return player;
     }

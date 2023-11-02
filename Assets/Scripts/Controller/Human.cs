@@ -10,7 +10,6 @@ public class Human : Player
 
     private void Awake()
     {
-
     }
 
     // Start is called before the first frame update

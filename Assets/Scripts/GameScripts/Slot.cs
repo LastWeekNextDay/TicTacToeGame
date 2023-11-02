@@ -41,6 +41,18 @@ public class Slot : MonoBehaviour
         {
             Vector3 spawnPosition = transform.position;
             spawnPosition += new Vector3(0, 0.1f, 0);
+            GameObject prefabX;
+            GameObject prefabO;
+            if (SessionInfo.Instance.Multiplayer)
+            {
+                prefabX = assetHolder.XMPObjPrefab;
+                prefabO = assetHolder.OMPObjPrefab;
+            }
+            else
+            {
+                prefabX = assetHolder.XObjPrefab;
+                prefabO = assetHolder.OObjPrefab;
+            }
             if (piece == "X") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.XObjPrefab, spawnPosition, transform); }
             if (piece == "O") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.OObjPrefab, spawnPosition, transform); }
         }
