@@ -133,7 +133,9 @@ public class GameLogic : MonoBehaviour
         else if (SessionInfo.Instance.MultiplayerType == "Join")
         {
             size = (int)PhotonNetwork.CurrentRoom.CustomProperties["GridSize"];
+            SessionInfo.Instance.GridSize = size;
             winCon = (int)PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"];
+            SessionInfo.Instance.WinCondition = winCon;
         }
         InitializeGame(size, winCon);
     }
