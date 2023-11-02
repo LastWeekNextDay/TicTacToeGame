@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,12 +31,23 @@ public class AssetHolder : MonoBehaviour
     public GameObject Spawn(GameObject prefab, Vector3 position)
     {
         if (prefab == null) { return null; }
+        if (SessionInfo.Instance.Multiplayer)
+        {
+            GameObject obj = PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation, 0);
+            return obj;
+        }
         return Instantiate(prefab, position, prefab.transform.rotation);
     }
 
     public GameObject Spawn(GameObject prefab, Vector3 position, Transform parent)
     {
         if (prefab == null) { return null; }
+        if (SessionInfo.Instance.Multiplayer)
+        {
+            GameObject obj = PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation, 0);
+            obj.transform.parent = parent;
+            return obj;
+        }
         return Instantiate(prefab, position, prefab.transform.rotation, parent);
     }
 }
