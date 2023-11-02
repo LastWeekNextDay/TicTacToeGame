@@ -146,7 +146,7 @@ public class GameLogic : MonoBehaviour
             Grid = new TicTacToeGrid(_assetHolder, this);
             Debug.Log("Grid size: " + SessionInfo.Instance.GridSize + ", Win condition: " + SessionInfo.Instance.WinCondition);
         }
-        NetworkManager.SendPlayerInfo(SessionInfo.Instance.MultiplayerType);
+        MPPlayerCreation(SessionInfo.Instance.MultiplayerType);
         while (Player1 == null || Player2 == null)
         {
             Debug.Log("Waiting for players to be set...");
