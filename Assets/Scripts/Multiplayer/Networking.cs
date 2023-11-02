@@ -156,16 +156,28 @@ public class Networking : MonoBehaviourPunCallbacks
         photonView.RPC("ReceivePlayer", RpcTarget.Others, multiplayerType, playerView.ViewID);
     }
 
+    public void ChangeTurnTo(int playerViewID)
+    {
+        photonView.RPC("TurnChange", RpcTarget.Others, playerViewID);
+    }
+
     [PunRPC]
-    public void ReceiveGameLogicViewID(int viewID)
+    void ReceiveGameLogicViewID(int viewID)
     {
         GameObject.Find("GameLogic").GetComponent<PhotonView>().ViewID = viewID;
     }
 
     [PunRPC]
-    public void ReceivePlayer(string multiplayerType, int playerViewID)
+    void ReceivePlayer(string multiplayerType, int playerViewID)
     {
         GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
         gameLogic.MPPlayerCreation(multiplayerType, playerViewID);
+    }
+
+    [PunRPC]
+    void TurnChange(int playerViewID)
+    {
+        GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
+        gameLogic.Turn = PhotonView.Find(playerViewID).gameObject.GetComponent<Player>();
     }
 }
