@@ -5,7 +5,6 @@ public class MenuStart : MonoBehaviour
     public GameObject mainMenu;
     public GameObject singlePlayer;
     public GameObject multiPlayer;
-    public GameObject options;
     public GameObject host;
     public GameObject join;
 
@@ -15,7 +14,6 @@ public class MenuStart : MonoBehaviour
         if (mainMenu != null) mainMenu.SetActive(true);
         if (singlePlayer != null) singlePlayer.SetActive(false);
         if (multiPlayer != null) multiPlayer.SetActive(false);
-        if (options != null) options.SetActive(false);
         if (host != null) host.SetActive(false);
         if (join != null) join.SetActive(false);
     }
