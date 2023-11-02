@@ -126,8 +126,10 @@ public class GameLogic : MonoBehaviour
         {
             size = SessionInfo.Instance.GridSize;
             winCon = SessionInfo.Instance.WinCondition;
-            PhotonNetwork.CurrentRoom.CustomProperties["GridSize"] = size;
-            PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"] = winCon;
+            ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+            customProperties["GridSize"] = size;
+            customProperties["WinCondition"] = winCon;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
             Grid = new TicTacToeGrid(_assetHolder, this);
         }
         else if (SessionInfo.Instance.MultiplayerType == "Join")
