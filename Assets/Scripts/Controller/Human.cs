@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class Human : Player
 {
@@ -10,7 +12,11 @@ public class Human : Player
     {
         base.Start();
         AI = false;
-        _inputController = GameObject.Find("InputController").GetComponent<InputController>();
+        if (GameObject.Find("GameLogic").GetComponent<GameLogic>().Multiplayer)
+        {
+            gameObject.AddComponent<PhotonView>();
+        }
+        _inputController = GetComponent<InputController>();
     }
 
     // Update is called once per frame

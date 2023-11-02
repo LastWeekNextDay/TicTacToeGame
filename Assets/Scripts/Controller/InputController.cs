@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun;
 
 public class InputController : MonoBehaviour
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,7 @@ public class InputController : MonoBehaviour
 
     public void HandleInput(Vector3 mousePosition, GameObject initiator)
     {
+
         // This function will handle the mouse clicks by going through all possible variants of clicks
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);

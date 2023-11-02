@@ -23,10 +23,9 @@ public class GameLogic : MonoBehaviour
     {
         //int size = PlayerPrefs.GetInt("GridSize");
         //int winCon = PlayerPrefs.GetInt("WinCondition");
-        //bool multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
+        Multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
         _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
         Grid = new TicTacToeGrid(_assetHolder, this);
-        Multiplayer = true;
         MakeSureAssetHolderIsNotNull();
         if (Multiplayer)
         {
@@ -136,7 +135,6 @@ public class GameLogic : MonoBehaviour
     Player CreatePlayerMP(GameObject prefab)
     {
         Player player = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Player>();
-        player.gameObject.AddComponent<PhotonView>();
         player.gameObject.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Takeover;
         player.gameObject.GetComponent<PhotonView>().ViewID = NetworkManager.CurrentID;
         return player;

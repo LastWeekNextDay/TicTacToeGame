@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4997541724993611091}
   - component: {fileID: 7664724663850317556}
+  - component: {fileID: -3208032849859670696}
   m_Layer: 0
   m_Name: HumanPlayerObj
   m_TagString: Untagged
@@ -46,3 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Piece: 
   AI: 0
+--- !u!114 &-3208032849859670696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4428205478497304081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3425875e0eaaa1346ae4564955e98e8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
