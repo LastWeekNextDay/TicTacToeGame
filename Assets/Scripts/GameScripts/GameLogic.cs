@@ -24,6 +24,13 @@ public class GameLogic : MonoBehaviour
         //int size = PlayerPrefs.GetInt("GridSize");
         //int winCon = PlayerPrefs.GetInt("WinCondition");
         Multiplayer = PlayerPrefs.GetInt("Multiplayer") == 1;
+        if (Multiplayer)
+        {
+            if (NetworkManager == null)
+            {
+                NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
+            }
+        }
         int size = PlayerPrefs.GetInt("GridSize");
         int winCon = PlayerPrefs.GetInt("WinCondition");
         _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
@@ -103,10 +110,6 @@ public class GameLogic : MonoBehaviour
 
     public void SetupMultiPlayer1(int size, int winCon)
     {
-        if (NetworkManager == null)
-        {
-            NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
-        }
         Player1 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
         Player2 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
         
