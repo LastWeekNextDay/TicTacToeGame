@@ -53,8 +53,8 @@ public class Slot : MonoBehaviour
                 prefabX = assetHolder.XObjPrefab;
                 prefabO = assetHolder.OObjPrefab;
             }
-            if (piece == "X") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.XObjPrefab, spawnPosition, transform); }
-            if (piece == "O") { _pieceObjectAttached = assetHolder.Spawn(assetHolder.OObjPrefab, spawnPosition, transform); }
+            if (piece == "X") { _pieceObjectAttached = assetHolder.Spawn(prefabX, spawnPosition, transform); }
+            if (piece == "O") { _pieceObjectAttached = assetHolder.Spawn(prefabO, spawnPosition, transform); }
         }
         if (_pieceObjectAttached != null) { IsOccupied = true; }
         return IsOccupied;
