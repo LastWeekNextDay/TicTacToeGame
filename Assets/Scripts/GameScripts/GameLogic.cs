@@ -146,7 +146,15 @@ public class GameLogic : MonoBehaviour
             Grid = new TicTacToeGrid(_assetHolder, this);
             Debug.Log("Grid size: " + SessionInfo.Instance.GridSize + ", Win condition: " + SessionInfo.Instance.WinCondition);
         }
-        MPPlayerCreation(SessionInfo.Instance.MultiplayerType);
+        if (SessionInfo.Instance.MultiplayerType == "Host")
+        {
+            Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
+            NetworkManager.SendPlayerInfo(SessionInfo.Instance.MultiplayerType, Player1.GetComponent<PhotonView>());
+        } else
+        {
+            Player2 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
+            NetworkManager.SendPlayerInfo(SessionInfo.Instance.MultiplayerType, Player2.GetComponent<PhotonView>());
+        }
         while (Player1 == null || Player2 == null)
         {
             Debug.Log("Waiting for players to be set...");
@@ -155,14 +163,14 @@ public class GameLogic : MonoBehaviour
         InitializeGame(SessionInfo.Instance.GridSize, SessionInfo.Instance.WinCondition);
     }
 
-    public void MPPlayerCreation(string MultiplayerType)
+    public void MPPlayerCreation(string MultiplayerType, int viewID)
     {
         if (MultiplayerType == "Host")
         {
-            Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
+            Player1 = PhotonView.Find(viewID).gameObject.GetComponent<Player>();
         } else
         {
-            Player2 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
+            Player2 = PhotonView.Find(viewID).gameObject.GetComponent<Player>();
         }
     }
 
