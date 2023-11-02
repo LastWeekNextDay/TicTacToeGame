@@ -71,19 +71,19 @@ public class GameLogic : MonoBehaviour
     }
 
     void RandomizeFirstGoer() {        
-        int random = UnityEngine.Random.Range(0, 2);
-        if (random == 0)
-        {
-            Turn = Player1;
-            Player1.Piece = "X";
-            Player2.Piece = "O";
-        }
-        else
-        {
-            Turn = Player2;
-            Player2.Piece = "X";
-            Player1.Piece = "O";
-        }
+        //int random = UnityEngine.Random.Range(0, 2);
+        //if (random == 0)
+        //
+        Turn = Player1;
+        Player1.Piece = "X";
+        Player2.Piece = "O";
+        //}
+        //else
+        //{
+        //    Turn = Player2;
+        //    Player2.Piece = "X";
+        //    Player1.Piece = "O";
+        //}
     }
 
     public void OnChangeTurn()
