@@ -32,9 +32,15 @@ public class Human : Player
     protected override void Update()
     {
         base.Update();
-        if (Input.GetMouseButtonDown(0))
+        if (SessionInfo.Instance.Multiplayer)
         {
-            _inputController.HandleInput(Input.mousePosition, gameObject);
+            if (GetComponent<PhotonView>().IsMine)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    _inputController.HandleInput(Input.mousePosition, gameObject);
+                }
+            }
         }
     }
 }

@@ -21,13 +21,6 @@ public class InputController : MonoBehaviour
 
     public void HandleInput(Vector3 mousePosition, GameObject initiator)
     {
-        if (SessionInfo.Instance.Multiplayer)
-        {
-           if (!GetComponent<PhotonView>().IsMine)
-           {
-                return;
-           }
-        }
         // This function will handle the mouse clicks by going through all possible variants of clicks
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
