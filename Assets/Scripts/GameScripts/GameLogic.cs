@@ -32,6 +32,7 @@ public class GameLogic : MonoBehaviour
                 NetworkManager.GetComponent<PhotonView>().ViewID = 1;
             }
             this.AddComponent<PhotonView>();
+            GetComponent<PhotonView>().ViewID = 2;
             StartCoroutine(SetupMultiPlayer());
             
         } else
@@ -110,21 +111,19 @@ public class GameLogic : MonoBehaviour
                 Debug.Log("Waiting for view ID to be allocated...");
                 yield return null;
             }
-        }
-        yield return NetworkManager.WaitForSecondPlayer();
-        Debug.Log("Other player has joined!");
-        if (SessionInfo.Instance.MultiplayerType == "Host")
-        {
             ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
             customProperties["GridSize"] = size;
             customProperties["WinCondition"] = winCon;
             Debug.Log("Game Logic View ID: " + this.GetComponent<PhotonView>().ViewID);
             customProperties["GameLogicViewID"] = this.GetComponent<PhotonView>().ViewID;
             PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-            Grid = new TicTacToeGrid(_assetHolder, this);
-            NetworkManager.SendGameLogicViewIDToClient(this.GetComponent<PhotonView>().ViewID);
         }
-        else if (SessionInfo.Instance.MultiplayerType == "Join")
+        yield return NetworkManager.WaitForSecondPlayer();
+        Debug.Log("Other player has joined!");
+        if (SessionInfo.Instance.MultiplayerType == "Host")
+        {
+            NetworkManager.SendGameLogicViewIDToClient(this.GetComponent<PhotonView>().ViewID);
+        } else if (SessionInfo.Instance.MultiplayerType == "Join")
         {
             while (PhotonNetwork.CurrentRoom == null) {                 
                 Debug.Log("Waiting for current room to be set...");
@@ -147,7 +146,16 @@ public class GameLogic : MonoBehaviour
             Grid = new TicTacToeGrid(_assetHolder, this);
             Debug.Log("Grid size: " + SessionInfo.Instance.GridSize + ", Win condition: " + SessionInfo.Instance.WinCondition);
         }
-        MPPlayerCreation();
+        MPPlayerCreation(SessionInfo.Instance.MultiplayerType);
+        int viewID = 0;
+        if (SessionInfo.Instance.MultiplayerType == "Host")
+        {
+            viewID = Player1.GetComponent<PhotonView>().ViewID;
+        } else
+        {
+            viewID = Player2.GetComponent<PhotonView>().ViewID;
+        }
+        NetworkManager.SendPlayerInfo(viewID, SessionInfo.Instance.MultiplayerType);
         while (Player1 == null || Player2 == null)
         {
             Debug.Log("Waiting for players to be set...");
@@ -156,9 +164,9 @@ public class GameLogic : MonoBehaviour
         InitializeGame(SessionInfo.Instance.GridSize, SessionInfo.Instance.WinCondition);
     }
 
-    void MPPlayerCreation()
+    public void MPPlayerCreation(string MultiplayerType)
     {
-        if (SessionInfo.Instance.MultiplayerType == "Host")
+        if (MultiplayerType == "Host")
         {
             Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
         } else
