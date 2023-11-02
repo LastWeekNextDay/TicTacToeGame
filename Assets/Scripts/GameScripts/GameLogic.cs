@@ -32,7 +32,7 @@ public class GameLogic : MonoBehaviour
             }
             this.AddComponent<PhotonView>();
             PhotonNetwork.AllocateViewID(this.GetComponent<PhotonView>());
-            StartCoroutine(SetupMultiPlayer1());
+            StartCoroutine(SetupMultiPlayer());
             
         } else
         {
@@ -93,26 +93,12 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    public void SetupSinglePlayer(int size, int winCon) 
-    {
-        Player1 = CreatePlayer(_assetHolder.HumanPlayerObjPrefab);
-        Player2 = CreatePlayer(_assetHolder.AIPlayerObjPrefab);
-        InitializeGame(size, winCon);
-    }
-
-    IEnumerator SetupMultiPlayer1()
+    IEnumerator SetupMultiPlayer()
     {
         yield return NetworkManager.RoomConnectionInitialization();
         Debug.Log("Host has joined!");
-        Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
-        StartCoroutine(SetupMultiPlayer2());
-    }
-
-    IEnumerator SetupMultiPlayer2()
-    {
         yield return NetworkManager.WaitForSecondPlayer();
         Debug.Log("Other player has joined!");
-        Player2 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
         int size = -1;
         int winCon = -1;
         if (SessionInfo.Instance.MultiplayerType == "Host")
@@ -143,7 +129,32 @@ public class GameLogic : MonoBehaviour
             Grid = new TicTacToeGrid(_assetHolder, this);
             Debug.Log("Grid size: " + SessionInfo.Instance.GridSize + ", Win condition: " + SessionInfo.Instance.WinCondition);
         }
+        MPPlayerCreation();
+        while (Player1 == null || Player2 == null)
+        {
+            Debug.Log("Waiting for players to be set...");
+            yield return null;
+        }
         InitializeGame(SessionInfo.Instance.GridSize, SessionInfo.Instance.WinCondition);
+    }
+
+    void MPPlayerCreation()
+    {
+        if (Player1 == null)
+        {
+            Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
+        }
+        else
+        {
+            Player2 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
+        }
+    }
+
+    public void SetupSinglePlayer(int size, int winCon)
+    {
+        Player1 = CreatePlayer(_assetHolder.HumanPlayerObjPrefab);
+        Player2 = CreatePlayer(_assetHolder.AIPlayerObjPrefab);
+        InitializeGame(size, winCon);
     }
 
     Player CreatePlayer(GameObject prefab)

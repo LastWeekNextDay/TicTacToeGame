@@ -42,10 +42,7 @@ public class AssetHolder : MonoBehaviour
         if (prefab == null) { return null; }
         if (SessionInfo.Instance.Multiplayer)
         {
-            if (TryGetComponent<PhotonView>(out PhotonView photonView))
-            {
-                return PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation);
-            }
+            return PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation);
         }
         return Instantiate(prefab, position, prefab.transform.rotation);
     }
@@ -55,10 +52,7 @@ public class AssetHolder : MonoBehaviour
         if (prefab == null) { return null; }
         if (SessionInfo.Instance.Multiplayer)
         {
-            if (TryGetComponent<PhotonView>(out PhotonView photonView))
-            {
-                return PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation);
-            }
+            return PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation);
         }
         return Instantiate(prefab, position, prefab.transform.rotation, parent); ;
     }
