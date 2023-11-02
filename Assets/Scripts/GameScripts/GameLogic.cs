@@ -2,7 +2,9 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour
@@ -29,18 +31,8 @@ public class GameLogic : MonoBehaviour
             {
                 NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
             }
-            SetupMultiPlayer1(size, winCon);
-            if (SessionInfo.Instance.MultiplayerType == "Host")
-            {
-                size = SessionInfo.Instance.GridSize;
-                winCon = SessionInfo.Instance.WinCondition;
-                Grid = new TicTacToeGrid(_assetHolder, this);
-            }
-            else if (SessionInfo.Instance.MultiplayerType == "Join")
-            {
-                size = Grid.Size;
-                winCon = VictoryCalculator.WinCondition;
-            }
+            SetupMultiPlayer1();
+            
         } else
         {
             size = SessionInfo.Instance.GridSize;
@@ -107,27 +99,42 @@ public class GameLogic : MonoBehaviour
         InitializeGame(size, winCon);
     }
 
-    public void SetupMultiPlayer1(int size, int winCon)
+    public void SetupMultiPlayer1()
     {
         Player1 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
         Player2 = CreatePlayerMP(_assetHolder.HumanPlayerObjPrefab);
         
-        StartCoroutine(SetupMultiPlayer2(size, winCon));
+        StartCoroutine(SetupMultiPlayer2());
     }
 
-    IEnumerator SetupMultiPlayer2(int size, int winCon)
+    IEnumerator SetupMultiPlayer2()
     {
         yield return NetworkManager.RoomConnectionInitialization();
         Debug.Log("Host has joined!");
         Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(0));
-        StartCoroutine(SetupMultiPlayer3(size, winCon));
+        StartCoroutine(SetupMultiPlayer3());
     }
 
-    IEnumerator SetupMultiPlayer3(int size, int winCon)
+    IEnumerator SetupMultiPlayer3()
     {
         yield return NetworkManager.WaitForSecondPlayer();
         Debug.Log("Other player has joined!");
         Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(1));
+        int size = -1;
+        int winCon = -1;
+        if (SessionInfo.Instance.MultiplayerType == "Host")
+        {
+            size = SessionInfo.Instance.GridSize;
+            winCon = SessionInfo.Instance.WinCondition;
+            PhotonNetwork.CurrentRoom.CustomProperties["GridSize"] = size;
+            PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"] = winCon;
+            Grid = new TicTacToeGrid(_assetHolder, this);
+        }
+        else if (SessionInfo.Instance.MultiplayerType == "Join")
+        {
+            size = (int)PhotonNetwork.CurrentRoom.CustomProperties["GridSize"];
+            winCon = (int)PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"];
+        }
         InitializeGame(size, winCon);
     }
 
