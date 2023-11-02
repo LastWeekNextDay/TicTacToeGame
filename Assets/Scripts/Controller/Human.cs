@@ -12,7 +12,7 @@ public class Human : Player
     {
         base.Start();
         AI = false;
-        if (GameObject.Find("GameLogic").GetComponent<GameLogic>().Multiplayer)
+        if (SessionInfo.Instance.Multiplayer)
         {
             gameObject.AddComponent<PhotonView>();
         }
