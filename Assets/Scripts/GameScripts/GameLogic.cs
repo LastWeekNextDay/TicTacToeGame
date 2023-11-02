@@ -105,7 +105,7 @@ public class GameLogic : MonoBehaviour
         yield return NetworkManager.RoomConnectionInitialization();
         Debug.Log("Host has joined!");
         Player1 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
-        Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(0));
+        Player1.gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
         StartCoroutine(SetupMultiPlayer2());
     }
 
@@ -114,7 +114,7 @@ public class GameLogic : MonoBehaviour
         yield return NetworkManager.WaitForSecondPlayer();
         Debug.Log("Other player has joined!");
         Player2 = CreatePlayer(_assetHolder.HumanPlayerMPObjPrefab);
-        Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(1));
+        Player2.gameObject.GetComponent<PhotonView>().TransferOwnership(NetworkManager.GetPlayer(1).ActorNumber);
         int size = -1;
         int winCon = -1;
         if (SessionInfo.Instance.MultiplayerType == "Host")
