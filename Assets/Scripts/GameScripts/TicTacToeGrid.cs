@@ -76,7 +76,7 @@ public class TicTacToeGrid
         {
             prefab = _assetHolder.SlotObjPrefab;
         }
-        _ticTacToeGrid[x][y] = _assetHolder.Spawn(_assetHolder.SlotObjPrefab, new Vector3(x, 0, y)).GetComponent<Slot>();
+        _ticTacToeGrid[x][y] = _assetHolder.Spawn(prefab, new Vector3(x, 0, y)).GetComponent<Slot>();
         _ticTacToeGrid[x][y].x = x;
         _ticTacToeGrid[x][y].y = y;
     }
