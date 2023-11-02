@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,6 +24,16 @@ public class UIController : MonoBehaviour
     void UpdateTurnText()
     {
         if (_gameLogic.Turn == null) { return; }
-        turnText.text = "Turn: " + _gameLogic.Turn.ToString();
+        if (_gameLogic.Turn.GetComponent<PhotonView>().IsMine)
+        {
+            turnText.text = "Turn: " + _gameLogic.Turn.ToString();
+            turnText.color = Color.green;
+        }
+        else
+        {
+            turnText.text = "Turn: " + _gameLogic.Turn.ToString();
+            turnText.color = Color.red;
+        }
+        
     }
 }
