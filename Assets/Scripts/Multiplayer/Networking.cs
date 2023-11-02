@@ -13,18 +13,6 @@ using System.Net.Http;
 public class Networking : MonoBehaviourPunCallbacks
 {
     public bool ConnectedToMaster = false;
-    private int _IDToAssign = 0;
-    public int CurrentID
-    {
-        get
-        {
-            if (_IDToAssign > 1)
-            {
-                _IDToAssign = 0;
-            }
-            return _IDToAssign++;
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {

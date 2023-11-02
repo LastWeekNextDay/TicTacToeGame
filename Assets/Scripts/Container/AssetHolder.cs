@@ -33,7 +33,10 @@ public class AssetHolder : MonoBehaviour
         if (prefab == null) { return null; }
         if (SessionInfo.Instance.Multiplayer)
         {
+            Debug.Log(prefab.name);
             GameObject obj = PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation, 0);
+            obj.AddComponent<PhotonView>();
+            PhotonNetwork.AllocateViewID(obj.GetComponent<PhotonView>());
             return obj;
         }
         return Instantiate(prefab, position, prefab.transform.rotation);
@@ -44,10 +47,13 @@ public class AssetHolder : MonoBehaviour
         if (prefab == null) { return null; }
         if (SessionInfo.Instance.Multiplayer)
         {
+            Debug.Log(prefab.name);
             GameObject obj = PhotonNetwork.Instantiate(prefab.name, position, prefab.transform.rotation, 0);
             obj.transform.parent = parent;
+            obj.AddComponent<PhotonView>();
+            PhotonNetwork.AllocateViewID(obj.GetComponent<PhotonView>());
             return obj;
         }
-        return Instantiate(prefab, position, prefab.transform.rotation, parent);
+        return Instantiate(prefab, position, prefab.transform.rotation); ;
     }
 }

@@ -30,6 +30,7 @@ public class GameLogic : MonoBehaviour
             {
                 NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
             }
+            this.AddComponent<PhotonView>();
             SetupMultiPlayer1();
             
         } else
@@ -161,7 +162,6 @@ public class GameLogic : MonoBehaviour
     {
         Player player = Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Player>();
         player.gameObject.GetComponent<PhotonView>().OwnershipTransfer = OwnershipOption.Takeover;
-        player.gameObject.GetComponent<PhotonView>().ViewID = NetworkManager.CurrentID;
         return player;
     }
 

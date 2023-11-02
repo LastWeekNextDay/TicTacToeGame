@@ -10,10 +10,7 @@ public class Human : Player
 
     private void Awake()
     {
-        if (SessionInfo.Instance.Multiplayer)
-        {
-            gameObject.AddComponent<PhotonView>();
-        }
+
     }
 
     // Start is called before the first frame update
@@ -21,10 +18,6 @@ public class Human : Player
     {
         base.Start();
         AI = false;
-        if (SessionInfo.Instance.Multiplayer)
-        {
-            gameObject.AddComponent<PhotonView>();
-        }
         _inputController = GetComponent<InputController>();
     }
 
@@ -34,13 +27,14 @@ public class Human : Player
         base.Update();
         if (SessionInfo.Instance.Multiplayer)
         {
-            if (GetComponent<PhotonView>().IsMine)
+            if (!GetComponent<PhotonView>().IsMine)
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    _inputController.HandleInput(Input.mousePosition, gameObject);
-                }
+                return;
             }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            _inputController.HandleInput(Input.mousePosition, gameObject);
         }
     }
 }

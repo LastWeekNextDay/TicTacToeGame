@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 
@@ -70,6 +71,11 @@ public class TicTacToeGrid
         _ticTacToeGrid[x][y] = _assetHolder.Spawn(_assetHolder.SlotObjPrefab, new Vector3(x, 0, y)).GetComponent<Slot>();
         _ticTacToeGrid[x][y].x = x;
         _ticTacToeGrid[x][y].y = y;
+        if (SessionInfo.Instance.Multiplayer)
+        {
+            _ticTacToeGrid[x][y].gameObject.AddComponent<PhotonView>();
+            PhotonNetwork.AllocateViewID(_ticTacToeGrid[x][y]);
+        }
     }
 
     void ClearSlot(int x, int y)
