@@ -65,7 +65,7 @@ public class GameLogic : MonoBehaviour
     public void ChangeTurn()
     {
         Turn = (Turn == Player1) ? Player2 : Player1;
-
+        OnChangeTurn();
     }
 
     void RandomizeFirstGoer() {        
