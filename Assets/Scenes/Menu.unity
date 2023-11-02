@@ -5293,7 +5293,7 @@ GameObject:
   - component: {fileID: 1549118485}
   - component: {fileID: 1549118484}
   m_Layer: 5
-  m_Name: WinConditionInputField
+  m_Name: IPInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6465,7 +6465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1827683415
 RectTransform:
   m_ObjectHideFlags: 0
