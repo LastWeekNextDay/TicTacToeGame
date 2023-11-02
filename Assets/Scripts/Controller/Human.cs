@@ -7,6 +7,15 @@ using Photon.Realtime;
 public class Human : Player
 {
     private InputController _inputController = null;
+
+    private void Awake()
+    {
+        if (SessionInfo.Instance.Multiplayer)
+        {
+            gameObject.AddComponent<PhotonView>();
+        }
+    }
+
     // Start is called before the first frame update
     protected override void Start()
     {

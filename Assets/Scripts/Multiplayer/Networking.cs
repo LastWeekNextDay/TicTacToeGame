@@ -103,9 +103,7 @@ public class Networking : MonoBehaviourPunCallbacks
     }
     void HostOrConnect()
     {
-        //bool host = PlayerPrefs.GetInt("Host") == 1;
-        bool host = false;
-        if (host)
+        if (SessionInfo.Instance.MultiplayerType == "Host")
         {
             HostGame();
         } else
