@@ -30,6 +30,7 @@ public class GameLogic : MonoBehaviour
             if (NetworkManager == null)
             {
                 NetworkManager = Instantiate(_assetHolder.NetworkManagerPrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Networking>();
+                NetworkManager.name = "NetworkManager";
                 NetworkManager.GetComponent<PhotonView>().ViewID = 1;
             }
             this.AddComponent<PhotonView>();

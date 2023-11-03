@@ -21,8 +21,8 @@ public class MainMenu : MonoBehaviour
     public void HostGame()
     {
         SessionInfo.Instance.Multiplayer = true;
-        SessionInfo.Instance.GridSize = 3;
-        SessionInfo.Instance.WinCondition = 3;
+        SessionInfo.Instance.GridSize = 5;
+        SessionInfo.Instance.WinCondition = 5;
         SessionInfo.Instance.MultiplayerType = "Host";
         StartGame();
     }
