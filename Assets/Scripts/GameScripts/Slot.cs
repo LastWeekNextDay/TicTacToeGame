@@ -56,7 +56,29 @@ public class Slot : MonoBehaviour
             if (piece == "X") { _pieceObjectAttached = assetHolder.Spawn(prefabX, spawnPosition, transform); }
             if (piece == "O") { _pieceObjectAttached = assetHolder.Spawn(prefabO, spawnPosition, transform); }
         }
-        if (_pieceObjectAttached != null) { IsOccupied = true; }
+        if (_pieceObjectAttached != null) {
+            StartCoroutine(PlayExplosion(_pieceObjectAttached.transform.position));
+            if (SessionInfo.Instance.Multiplayer)
+            {
+                GameObject.Find("NetworkManager").GetComponent<Networking>().PlayExplosion(_pieceObjectAttached.transform.position.x,
+                                                                                            _pieceObjectAttached.transform.position.y,
+                                                                                            _pieceObjectAttached.transform.position.z);
+            }
+            IsOccupied = true; 
+        }
         return IsOccupied;
+    }
+
+    public static IEnumerator PlayExplosion(Vector3 position) {
+        AssetHolder assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        ParticleSystem boom = Instantiate(assetHolder.EnergyExplosionPrefab, position, Quaternion.identity).GetComponent<ParticleSystem>();
+        float duration = boom.main.duration;
+        float now = 0f;
+        while (now < duration)
+        {
+            now += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(boom.gameObject);
     }
 }

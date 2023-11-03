@@ -361,6 +361,7 @@ MonoBehaviour:
   HumanPlayerObjPrefab: {fileID: 4428205478497304081, guid: ce832b7a5e363254ba1574099aec43d8, type: 3}
   HumanPlayerMPObjPrefab: {fileID: 4428205478497304081, guid: b9dcd6922d615ad44b50c8f4d0507b56, type: 3}
   NetworkManagerPrefab: {fileID: 5958948311435946742, guid: 26b0fbad1c354704bad151926fa0b08e, type: 3}
+  PlasmaExplosionPrefab: {fileID: 0}
 --- !u!4 &1097096720
 Transform:
   m_ObjectHideFlags: 0

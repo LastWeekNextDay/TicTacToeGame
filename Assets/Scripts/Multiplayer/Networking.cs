@@ -161,6 +161,11 @@ public class Networking : MonoBehaviourPunCallbacks
         photonView.RPC("TurnChange", RpcTarget.Others, playerViewID);
     }
 
+    public void PlayExplosion(float x, float y, float z)
+    {
+        photonView.RPC("Explosion", RpcTarget.Others, x, y, z);
+    }
+
     [PunRPC]
     void ReceiveGameLogicViewID(int viewID)
     {
@@ -179,5 +184,11 @@ public class Networking : MonoBehaviourPunCallbacks
     {
         GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
         gameLogic.Turn = PhotonView.Find(playerViewID).gameObject.GetComponent<Player>();
+    }
+
+    [PunRPC]
+    void Explosion(float x, float y, float z)
+    {
+        StartCoroutine(Slot.PlayExplosion(new Vector3(x, y, z)));
     }
 }

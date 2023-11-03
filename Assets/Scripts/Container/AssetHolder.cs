@@ -15,6 +15,7 @@ public class AssetHolder : MonoBehaviour
     public GameObject HumanPlayerObjPrefab = null;
     public GameObject HumanPlayerMPObjPrefab = null;
     public GameObject NetworkManagerPrefab = null;
+    public GameObject EnergyExplosionPrefab = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +29,7 @@ public class AssetHolder : MonoBehaviour
         HumanPlayerObjPrefab = Resources.Load<GameObject>("HumanPlayerObj");
         HumanPlayerMPObjPrefab = Resources.Load<GameObject>("HumanPlayerMPObj");
         NetworkManagerPrefab = Resources.Load<GameObject>("NetworkManager");
+        EnergyExplosionPrefab = Resources.Load<GameObject>("EnergyExplosion");
     }
 
     // Update is called once per frame

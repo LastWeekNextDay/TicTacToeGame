@@ -24,16 +24,22 @@ public class UIController : MonoBehaviour
     void UpdateTurnText()
     {
         if (_gameLogic.Turn == null) { return; }
-        if (_gameLogic.Turn.GetComponent<PhotonView>().IsMine)
-        {
-            turnText.text = "Turn: " + _gameLogic.Turn.ToString();
-            turnText.color = Color.green;
-        }
-        else
-        {
-            turnText.text = "Turn: " + _gameLogic.Turn.ToString();
-            turnText.color = Color.red;
-        }
-        
+        turnText.text = "Turn: " + _gameLogic.Turn.ToString();
+        if (_gameLogic.Turn.GetComponent<PhotonView>() == null) { 
+            if (_gameLogic.Turn.AI) { 
+                turnText.color = Color.red; 
+            } else { 
+                turnText.color = Color.green; 
+            }
+        } else {
+            if (_gameLogic.Turn.GetComponent<PhotonView>().IsMine)
+            {
+                turnText.color = Color.green;
+            }
+            else
+            {
+                turnText.color = Color.red;
+            }
+        } 
     }
 }
