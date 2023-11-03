@@ -166,6 +166,11 @@ public class Networking : MonoBehaviourPunCallbacks
         photonView.RPC("Explosion", RpcTarget.Others, x, y, z);
     }
 
+    public void PlaySound(float x, float y, float z)
+    {
+        photonView.RPC("Sound", RpcTarget.Others, x, y, z);
+    }
+
     [PunRPC]
     void ReceiveGameLogicViewID(int viewID)
     {
@@ -190,5 +195,11 @@ public class Networking : MonoBehaviourPunCallbacks
     void Explosion(float x, float y, float z)
     {
         StartCoroutine(Slot.PlayExplosion(new Vector3(x, y, z)));
+    }
+
+    [PunRPC]
+    void Sound(float x, float y, float z)
+    {
+        StartCoroutine(Slot.PlaySound(new Vector3(x, y, z)));
     }
 }

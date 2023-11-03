@@ -46,6 +46,7 @@ MonoBehaviour:
   - TurnChange
   - SyncSlot
   - Explosion
+  - Sound
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
