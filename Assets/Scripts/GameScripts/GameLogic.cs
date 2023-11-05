@@ -33,7 +33,7 @@ public class GameLogic : MonoBehaviour
                 NetworkManager.name = "NetworkManager";
                 NetworkManager.GetComponent<PhotonView>().ViewID = 1;
             }
-            this.AddComponent<PhotonView>();
+            gameObject.AddComponent<PhotonView>();
             GetComponent<PhotonView>().ViewID = 2;
             StartCoroutine(SetupMultiPlayer());
             

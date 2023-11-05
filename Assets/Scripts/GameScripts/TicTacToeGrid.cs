@@ -72,14 +72,6 @@ public class TicTacToeGrid
 
     void CreateSlot(int x, int y)
     {
-        //GameObject prefab;
-        //if (SessionInfo.Instance.Multiplayer)
-        //{
-        //    prefab = _assetHolder.SlotMPObjPrefab;
-        //} else
-        //{
-        //    prefab = _assetHolder.SlotObjPrefab;
-        //}
         _ticTacToeGrid[x][y] = GameObject.Instantiate(_assetHolder.SlotObjPrefab, new Vector3(x, 0, y), _assetHolder.SlotObjPrefab.transform.rotation).GetComponent<Slot>();
         _ticTacToeGrid[x][y].x = x;
         _ticTacToeGrid[x][y].y = y;
