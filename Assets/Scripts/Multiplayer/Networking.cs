@@ -94,9 +94,11 @@ public class Networking : MonoBehaviourPunCallbacks
     {
         if (SessionInfo.Instance.MultiplayerType == "Host")
         {
+            
             HostGame();
         } else
         {
+            
             JoinGame();
         }
     }
@@ -160,6 +162,43 @@ public class Networking : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(name);
     }
 
+    void SetPlayerPiece(string piece)
+    {
+        Debug.Log("[Networking] About to set player piece to: " + piece);
+        ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+    {
+        { "Piece", piece }
+    };
+
+        if (PhotonNetwork.LocalPlayer == null)
+        {
+            Debug.LogError("[Networking] PhotonNetwork.LocalPlayer is null.");
+            return;
+        }
+
+        if (PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps))
+        {
+            Debug.Log("[Networking] Successfully called SetCustomProperties.");
+        }
+        else
+        {
+            Debug.LogError("[Networking] SetCustomProperties call failed.");
+        }
+    }
+
+    // Callback for when custom properties are updated
+    public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        if (changedProps.ContainsKey("Piece"))
+        {
+            Debug.Log("[Networking] Player piece updated to: " + changedProps["Piece"].ToString());
+        }
+    }
+
+
+
+
+
     public void SendGameLogicViewIDToClient(int viewID)
     {
         photonView.RPC("ReceiveGameLogicViewID", RpcTarget.Others, viewID);
@@ -183,6 +222,11 @@ public class Networking : MonoBehaviourPunCallbacks
     public void PlaySound(float x, float y, float z)
     {
         photonView.RPC("Sound", RpcTarget.Others, x, y, z);
+    }
+
+    public void AssignPiece(string ox)
+    {
+        photonView.RPC("Playerox", RpcTarget.Others, ox);
     }
 
     [PunRPC]
@@ -226,5 +270,21 @@ public class Networking : MonoBehaviourPunCallbacks
         {
                 uiController.ShowWinner(winner);
         }
+    }
+    [PunRPC]
+    void Playerox(string ox)
+    {
+        GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
+    
+        gameLogic.Player1.Piece = ox;
+        gameLogic.Turn = gameLogic.Player1;
+        if (ox == "X")
+        {
+            gameLogic.Player2.Piece = "O";
+        }
+        else
+        {
+            gameLogic.Player2.Piece = "X";
+      }
     }
 }

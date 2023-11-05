@@ -75,17 +75,26 @@ public class GameLogic : MonoBehaviour
         OnChangeTurn();
     }
 
-    void RandomizeFirstGoer() {
+    void RandomizeFirstGoer()
+    {
+        if (SessionInfo.Instance.MultiplayerType == "Host")
+        {
             string host = SessionInfo.Instance.xo.ToString();
+            Player1.Piece = host.ToString();
+            Player2.Piece = (host.ToString() == "X") ? "O" : "X";
             Turn = Player1;
-        Player1.Piece = host.ToString();
-        Player2.Piece = (host.ToString() == "X") ? "O" : "X";
-        /*Player1.Piece = "O";
-        Player2.Piece = "X";*/
-        Debug.Log("Host Sesion info: " + host.ToString() + "  Player1: " + Player1.Piece.ToString() + " Player2: " + Player2.Piece.ToString());
+            NetworkManager.AssignPiece(host);
+        }
+        if (SessionInfo.Instance.Multiplayer == false)
+        {
+            string host = SessionInfo.Instance.xo.ToString();
+            Player1.Piece = host.ToString();
+            Player2.Piece = (host.ToString() == "X") ? "O" : "X";
+            Turn = Player1;
+        }
     }
 
-    public void OnChangeTurn()
+        public void OnChangeTurn()
     {
         if (!SessionInfo.Instance.Multiplayer)
         {
