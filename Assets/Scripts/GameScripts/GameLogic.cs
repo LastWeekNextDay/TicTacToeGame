@@ -218,7 +218,7 @@ public class GameLogic : MonoBehaviour
 
     void EndGame(string winningPiece)
     {
-        if (PhotonNetwork.InRoom) // Multiplayer
+        if (SessionInfo.Instance.Multiplayer == true) // Multiplayer
         {
             // Call the RPC on all clients to update their end game status
             NetworkManager.photonView.RPC("GameEnd", RpcTarget.All, winningPiece);

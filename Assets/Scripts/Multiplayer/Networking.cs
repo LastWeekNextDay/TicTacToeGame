@@ -229,6 +229,11 @@ public class Networking : MonoBehaviourPunCallbacks
         photonView.RPC("Playerox", RpcTarget.Others, ox);
     }
 
+    public void SendOccup(int x, int y)
+    {
+        photonView.RPC("SetOccupied", RpcTarget.Others, x, y);
+    }
+
     [PunRPC]
     void ReceiveGameLogicViewID(int viewID)
     {
@@ -266,9 +271,35 @@ public class Networking : MonoBehaviourPunCallbacks
     {
         // This code will be executed on all clients
         UIController uiController = GameObject.Find("UIController").GetComponent<UIController>();
+        GameLogic game = GameObject.Find("GameLogic").GetComponent<GameLogic>();
         if (uiController != null)
         {
-                uiController.ShowWinner(winner);
+            GameObject PlayerWinner = null;
+            if (winner == game.Player1.Piece)
+            {
+                PlayerWinner = game.Player1.gameObject;
+            }
+            if (winner == game.Player2.Piece)
+            {
+                PlayerWinner = game.Player2.gameObject;
+            }
+            if (winner == null)
+            {
+                uiController.ShowDraw();
+                return;
+            }
+
+            if (PlayerWinner.GetComponent<PhotonView>().IsMine)
+            {
+                uiController.ShowVictory();
+            }
+            else
+            {
+                
+                uiController.ShowDefeat();
+            }
+            
+                
         }
     }
     [PunRPC]
@@ -286,5 +317,13 @@ public class Networking : MonoBehaviourPunCallbacks
         {
             gameLogic.Player2.Piece = "X";
       }
+    }
+
+    [PunRPC]
+
+    void SetOccupied(int x, int y)
+    {
+        TicTacToeGrid grid = GameObject.Find("GameLogic").GetComponent<GameLogic>().Grid;
+        grid.Get(x, y).IsOccupied = true;
     }
 }

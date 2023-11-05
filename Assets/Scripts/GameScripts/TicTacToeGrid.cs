@@ -36,7 +36,11 @@ public class TicTacToeGrid
     public bool AllSlotsOccupied() 
     {         
         bool allSlotsOccupied = true;
-        GoThroughGrid((xCoordinate, yCoordinate) => { if (!_ticTacToeGrid[xCoordinate][yCoordinate].IsOccupied) { allSlotsOccupied = false; } });
+        GoThroughGrid((xCoordinate, yCoordinate) => 
+        {
+            Debug.Log("Checking slot " + xCoordinate + ", " + yCoordinate + " for occupancy: " + _ticTacToeGrid[xCoordinate][yCoordinate].IsOccupied);
+            if (!_ticTacToeGrid[xCoordinate][yCoordinate].IsOccupied) { allSlotsOccupied = false; } 
+        });
         return allSlotsOccupied;
     }
 

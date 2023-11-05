@@ -69,6 +69,7 @@ public class Slot : MonoBehaviour
                 NetworkManager.PlaySound(_pieceObjectAttached.transform.position.x,
                                          _pieceObjectAttached.transform.position.y,
                                          _pieceObjectAttached.transform.position.z);
+                NetworkManager.SendOccup(x,y);
             }
             
             IsOccupied = true; 
