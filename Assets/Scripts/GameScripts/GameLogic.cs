@@ -75,20 +75,14 @@ public class GameLogic : MonoBehaviour
         OnChangeTurn();
     }
 
-    void RandomizeFirstGoer() {        
-        //int random = UnityEngine.Random.Range(0, 2);
-        //if (random == 0)
-        //
-        Turn = Player1;
-        Player1.Piece = "X";
-        Player2.Piece = "O";
-        //}
-        //else
-        //{
-        //    Turn = Player2;
-        //    Player2.Piece = "X";
-        //    Player1.Piece = "O";
-        //}
+    void RandomizeFirstGoer() {
+            string host = SessionInfo.Instance.xo.ToString();
+            Turn = Player1;
+        Player1.Piece = host.ToString();
+        Player2.Piece = (host.ToString() == "X") ? "O" : "X";
+        /*Player1.Piece = "O";
+        Player2.Piece = "X";*/
+        Debug.Log("Host Sesion info: " + host.ToString() + "  Player1: " + Player1.Piece.ToString() + " Player2: " + Player2.Piece.ToString());
     }
 
     public void OnChangeTurn()
@@ -184,6 +178,8 @@ public class GameLogic : MonoBehaviour
         Player1 = CreatePlayer(_assetHolder.HumanPlayerObjPrefab);
         Player2 = CreatePlayer(_assetHolder.AIPlayerObjPrefab);
         InitializeGame(size, winCon);
+        UIController control = GameObject.Find("UIController").GetComponent<UIController>();
+        control.SinglePlayerScene();
     }
 
     Player CreatePlayer(GameObject prefab)
@@ -197,15 +193,47 @@ public class GameLogic : MonoBehaviour
         if (VictoryCalculator.ValueHasWon(x, y))
         {
             Debug.Log("Player " + player.Piece + " has won!");
+            EndGame(player.Piece.ToString());
             GameActive = false;
             return;
         }
         if (VictoryCalculator.GameIsTied())
         {
             Debug.Log("Game is tied!");
+            EndGame(null);
             GameActive = false;
             return;
         }
         ChangeTurn();
+    }
+
+    void EndGame(string winningPiece)
+    {
+        if (PhotonNetwork.InRoom) // Multiplayer
+        {
+            // Call the RPC on all clients to update their end game status
+            NetworkManager.photonView.RPC("GameEnd", RpcTarget.All, winningPiece);
+
+        }
+        else // Single Player or Draw
+        {
+            // Call the UIController directly
+            UIController uiController = FindObjectOfType<UIController>();
+            if (uiController != null)
+            {
+                if (winningPiece == null)
+                {
+                    uiController.ShowDraw();
+                }
+                else if (Player1.Piece == winningPiece)
+                {
+                    uiController.ShowVictory();
+                }
+                else
+                {
+                    uiController.ShowDefeat();
+                }
+            }
+        }
     }
 }

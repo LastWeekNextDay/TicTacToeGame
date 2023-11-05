@@ -9,6 +9,8 @@ public class SessionInfo : MonoBehaviour
     public string MultiplayerType;
     public int GridSize;
     public int WinCondition;
+    public string RoomName;
+    public string xo;
     private void Awake()
     {
         DontDestroyOnLoad(this);

@@ -52,6 +52,7 @@ public class Networking : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("Joined Room " + PhotonNetwork.CurrentRoom.Name);
+        
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -104,17 +105,26 @@ public class Networking : MonoBehaviourPunCallbacks
     {
         while (!ConnectedToMaster)
         {
-            Debug.Log("Waiting to connect to master...");
+            string message = "Waiting to connect to master...";
+            Debug.Log(message);
+            UIController control = GameObject.Find("UIController").GetComponent<UIController>();
+            control.OnConnectingScene(message);
             yield return null;
         }
         while (!PhotonNetwork.InRoom)
         {
-            Debug.Log("Waiting to connect to room...");
+            string message = "Waiting to connect to room...";
+            Debug.Log(message);
+            UIController control = GameObject.Find("UIController").GetComponent<UIController>();
+            control.OnConnectingScene(message);
             yield return null;
         }
         while (PhotonNetwork.CurrentRoom.PlayerCount < 1)
         {
-            Debug.Log("Waiting for host to join room...");
+            string message = "Waiting for host to join room...";
+            Debug.Log(message);
+            UIController control = GameObject.Find("UIController").GetComponent<UIController>();
+            control.OnConnectingScene(message);
             yield return null;
         }
     }
@@ -124,25 +134,29 @@ public class Networking : MonoBehaviourPunCallbacks
         while (PhotonNetwork.CurrentRoom.PlayerCount < 2)
         {
             Debug.Log("Waiting for other player to join...");
+            UIController control = GameObject.Find("UIController").GetComponent<UIController>();
+            control.OnLoadingScene();
             yield return null;
         }
         foreach (var player in PhotonNetwork.CurrentRoom.Players)
         {
             Debug.Log("Player " + player.Value.NickName + " joined room " + PhotonNetwork.CurrentRoom.Name);
+            UIController control = GameObject.Find("UIController").GetComponent<UIController>();
+            control.OffLoadingScene();
         }
     }
 
     void HostGame()
     {
         // string name = PlayerPrefs.GetString("HostName");
-        string name = "test";
+        string name = SessionInfo.Instance.RoomName;
         PhotonNetwork.CreateRoom(name, new RoomOptions { MaxPlayers = 2, IsVisible = true });
     }
 
     void JoinGame()
     {
         //string name = PlayerPrefs.GetString("HostName");
-        string name = "test";
+        string name = SessionInfo.Instance.RoomName;
         PhotonNetwork.JoinRoom(name);
     }
 
@@ -201,5 +215,16 @@ public class Networking : MonoBehaviourPunCallbacks
     void Sound(float x, float y, float z)
     {
         StartCoroutine(Slot.PlaySound(new Vector3(x, y, z)));
+    }
+
+    [PunRPC]
+    void GameEnd(String winner)
+    {
+        // This code will be executed on all clients
+        UIController uiController = GameObject.Find("UIController").GetComponent<UIController>();
+        if (uiController != null)
+        {
+                uiController.ShowWinner(winner);
+        }
     }
 }
