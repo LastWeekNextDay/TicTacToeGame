@@ -15,16 +15,16 @@ public class GameLogic : MonoBehaviour
     public Player Player1 = null;
     public Player Player2 = null;
     public Player Turn = null;
-    public TicTacToeGrid Grid = null;
+    public TicTacToeGridUnity Grid = null;
     public VictoryCalculator VictoryCalculator = null;
 
     // Start is called before the first frame update
     void Start()
     {
         _assetHolder = GameObject.Find("AssetHolder").GetComponent<AssetHolder>();
+        Grid = GameObject.Find("TicTacToeGrid").GetComponent<TicTacToeGridUnity>();
         int size = -1;
         int winCon = -1;
-        Grid = new TicTacToeGrid(_assetHolder, this);
         if (SessionInfo.Instance.Multiplayer)
         {
             if (NetworkManager == null)
@@ -60,7 +60,7 @@ public class GameLogic : MonoBehaviour
     {
         Grid.SetupGrid(gridSize);
         Camera.main.GetComponent<CameraScript>().SetupCamera();
-        VictoryCalculator = new VictoryCalculator(Grid, winCondition);
+        VictoryCalculator = new VictoryCalculator(Grid.GridBase, winCondition);
         RandomizeFirstGoer();
         GameActive = true;
     }
@@ -151,7 +151,6 @@ public class GameLogic : MonoBehaviour
             SessionInfo.Instance.GridSize = size;
             winCon = (int)PhotonNetwork.CurrentRoom.CustomProperties["WinCondition"];
             SessionInfo.Instance.WinCondition = winCon;
-            Grid = new TicTacToeGrid(_assetHolder, this);
             Debug.Log("Grid size: " + SessionInfo.Instance.GridSize + ", Win condition: " + SessionInfo.Instance.WinCondition);
         }
         if (SessionInfo.Instance.MultiplayerType == "Host")

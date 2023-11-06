@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class VictoryCalculator
 {
-    private TicTacToeGrid _grid = null;
+    private TicTacToeGrid _gridBase = null;
     public int WinCondition = 3;
 
     public VictoryCalculator(TicTacToeGrid grid, int winCondition)
     {
-        _grid = grid;
+        _gridBase = grid;
         WinCondition = winCondition;
     }
 
     public bool GameIsTied()
     {
-        return _grid.AllSlotsOccupied();
+        return _gridBase.AllSlotsOccupied();
     }
 
     public bool ValueHasWon(int valueXCoordinate, int valueYCoordinate)
     {
-        string valuePiece = _grid.Get(valueXCoordinate, valueYCoordinate).Piece();
+        string valuePiece = _gridBase.Grid[valueXCoordinate][valueYCoordinate].Piece;
         if (valuePiece != "O" && valuePiece != "X") { return false; }
 
         int sameValuesInARow;
@@ -31,15 +31,15 @@ public class VictoryCalculator
             {
                 // Skip slots that are out of bounds or are at the position of the provided slot
                 if (xCoordinateToCheck < 0 ||
-                    xCoordinateToCheck >= _grid.Size ||
+                    xCoordinateToCheck >= _gridBase.Size ||
                     yCoordinateToCheck < 0 ||
-                    yCoordinateToCheck >= _grid.Size ||
+                    yCoordinateToCheck >= _gridBase.Size ||
                     (xCoordinateToCheck == valueXCoordinate && yCoordinateToCheck == valueYCoordinate))
                 {
                     continue;
                 }
 
-                string adjacentPiece = _grid.Get(xCoordinateToCheck, yCoordinateToCheck).Piece();
+                string adjacentPiece = _gridBase.Grid[xCoordinateToCheck][yCoordinateToCheck].Piece;
                 if (adjacentPiece != valuePiece) continue;
 
                 // If adjacent piece is equal to valuePiece, calculate the direction to check
@@ -62,7 +62,7 @@ public class VictoryCalculator
 
     public void SetGrid(TicTacToeGrid grid)
     {
-        _grid = grid;
+        _gridBase = grid;
     }
 
     int ValuesInARow(int xCoordinate, int yCoordinate, int deltaX, int deltaY)
@@ -71,15 +71,15 @@ public class VictoryCalculator
         yCoordinate += deltaY;
 
         if (xCoordinate < 0 ||
-            xCoordinate >= _grid.Size ||
+            xCoordinate >= _gridBase.Size ||
             yCoordinate < 0 ||
-            yCoordinate >= _grid.Size)
+            yCoordinate >= _gridBase.Size)
         {
             return 0;
         }
 
-        string originalPiece = _grid.Get(xCoordinate - deltaX, yCoordinate - deltaY).Piece();
-        string currentPiece = _grid.Get(xCoordinate, yCoordinate).Piece();
+        string originalPiece = _gridBase.Grid[xCoordinate - deltaX][yCoordinate - deltaY].Piece;
+        string currentPiece = _gridBase.Grid[xCoordinate][yCoordinate].Piece;
 
         if (originalPiece != currentPiece)
         {

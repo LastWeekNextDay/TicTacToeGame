@@ -33,14 +33,14 @@ public class InputController : MonoBehaviour
         // Attempt to place a piece on a slot, even if unsuccessful, return true if a slot was clicked
         // However, return false if the game is not active or a slot was not clicked
         GameLogic gameLogic = GameObject.Find("GameLogic").GetComponent<GameLogic>();
-        Slot slot = hit.collider.gameObject.GetComponent<Slot>();
-        if (gameLogic == null || !gameLogic.GameActive || slot == null ) 
+        SlotUnity slotUnity = hit.collider.gameObject.GetComponent<SlotUnity>();
+        if (gameLogic == null || !gameLogic.GameActive || slotUnity == null ) 
         { 
             return false; 
         }
-        if (initiator.GetComponent<Player>().Piece == gameLogic.Turn.Piece && !slot.IsOccupied)
+        if (initiator.GetComponent<Player>().Piece == gameLogic.Turn.Piece && !slotUnity.Slot.IsOccupied)
         {
-            gameLogic.Grid.PlacePiece(slot.x, slot.y, initiator.GetComponent<Player>());
+            gameLogic.Grid.PlacePiece(slotUnity.Slot.x, slotUnity.Slot.y, initiator.GetComponent<Player>());
         }
         return true;
     }

@@ -42,8 +42,8 @@ public class AI : Player
     {
         _makingMove = true;
         _justPlacedPiece = false;
-        TicTacToeGrid grid = _gameLogic.Grid;
-        int gridSize = grid.Size;
+        TicTacToeGrid gridBase = _gameLogic.Grid.GridBase;
+        int gridSize = gridBase.Size;
         Dictionary<int, List<int>> valuesXY = new Dictionary<int, List<int>>();
         for (int x = 0; x < gridSize; x++)
         {
@@ -61,9 +61,9 @@ public class AI : Player
                 int y = Random.Range(0, valuesXY[x].Count);
                 if (valuesXY[x].Contains(y))
                 {
-                    if (!grid.Get(x, y).IsOccupied)
+                    if (!gridBase.Grid[x][y].IsOccupied)
                     {
-                        grid.PlacePiece(x, y, this.gameObject.GetComponent<Player>());
+                        _gameLogic.Grid.PlacePiece(x, y, this.gameObject.GetComponent<Player>());
                         break;
                     }
                     else

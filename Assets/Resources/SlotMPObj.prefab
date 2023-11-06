@@ -74,34 +74,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f921eec3f1fd751409f4f414c7ed34e3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5539141574782729099}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f921eec3f1fd751409f4f414c7ed34e3, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6657501996089927511}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f921eec3f1fd751409f4f414c7ed34e3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5375332170244463504}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f921eec3f1fd751409f4f414c7ed34e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 266321700757499841}
   m_SourcePrefab: {fileID: 100100000, guid: f921eec3f1fd751409f4f414c7ed34e3, type: 3}
 --- !u!1 &6313827648049171784 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f921eec3f1fd751409f4f414c7ed34e3, type: 3}
   m_PrefabInstance: {fileID: 6583788880914280473}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5539141574782729099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6313827648049171784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfb1a7e92b2c0f841a2bb440a45dd7b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsOccupied: 0
-  x: 0
-  y: 0
 --- !u!64 &6657501996089927511
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -146,3 +131,17 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &266321700757499841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313827648049171784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5aa70354e4c5a458ba96db9f424b18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: 0

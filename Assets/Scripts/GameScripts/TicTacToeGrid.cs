@@ -4,33 +4,19 @@ using UnityEngine;
 
 public class TicTacToeGrid
 {
-    private AssetHolder _assetHolder;
-    private GameLogic _gameLogic;
-    private Slot[][] _ticTacToeGrid;
+    public Slot[][] Grid;
 
     public int Size { get; private set; }
 
-    public TicTacToeGrid(AssetHolder assetHolder, GameLogic gameLogic)
-    {
-        _assetHolder = assetHolder;
-        _gameLogic = gameLogic;
-    }
-
-    public void SetAssetHolder(AssetHolder assetHolder)
-    {
-        _assetHolder = assetHolder;
-    }
-
     public void SetupGrid(int size)
     {
-        // Create the grid of x size
-        _ticTacToeGrid = new Slot[size][];
+        Grid = new Slot[size][];
         for (int xCoordinate = 0; xCoordinate < size; xCoordinate++)
         {
-            _ticTacToeGrid[xCoordinate] = new Slot[size];
+            Grid[xCoordinate] = new Slot[size];
         }
+        GoThroughGrid(CreateEmptySlot);
         Size = size;
-        GoThroughGrid(CreateSlot);
     }
 
     public bool AllSlotsOccupied() 
@@ -38,10 +24,16 @@ public class TicTacToeGrid
         bool allSlotsOccupied = true;
         GoThroughGrid((xCoordinate, yCoordinate) => 
         {
-            Debug.Log("Checking slot " + xCoordinate + ", " + yCoordinate + " for occupancy: " + _ticTacToeGrid[xCoordinate][yCoordinate].IsOccupied);
-            if (!_ticTacToeGrid[xCoordinate][yCoordinate].IsOccupied) { allSlotsOccupied = false; } 
+            if (!Grid[xCoordinate][yCoordinate].IsOccupied) { allSlotsOccupied = false; } 
         });
         return allSlotsOccupied;
+    }
+
+    void CreateEmptySlot(int x, int y)
+    {
+        Grid[x][y] = new Slot();
+        Grid[x][y].x = x;
+        Grid[x][y].y = y;
     }
 
     public void ResetGrid()
@@ -49,41 +41,31 @@ public class TicTacToeGrid
         GoThroughGrid(ClearSlot);
     }
 
-    public Slot Get(int xCoordinate, int yCoordinate)
+    public bool PlacePiece(int xCoordinate, int yCoordinate, Player player)
     {
-        return _ticTacToeGrid[xCoordinate][yCoordinate];
+        return SetPiece(xCoordinate, yCoordinate, player);
     }
 
-    public void PlacePiece(int xCoordinate, int yCoordinate, Player player)
+    public void GoThroughGrid(Action<int,int> action)
     {
-        if (Set(xCoordinate, yCoordinate, player)) { _gameLogic.OnPiecePlaced(xCoordinate, yCoordinate, player); }
-    }
-
-    void GoThroughGrid(Action<int,int> action)
-    {
-        for (int x = 0; x < _ticTacToeGrid.Length; x++)
+        for (int x = 0; x < Grid.Length; x++)
         {
-            for (int y = 0; y < _ticTacToeGrid[x].Length; y++)
+            for (int y = 0; y < Grid[x].Length; y++)
             {
                 action(x, y);
             }
         }
     }
 
-    void CreateSlot(int x, int y)
-    {
-        _ticTacToeGrid[x][y] = GameObject.Instantiate(_assetHolder.SlotObjPrefab, new Vector3(x, 0, y), _assetHolder.SlotObjPrefab.transform.rotation).GetComponent<Slot>();
-        _ticTacToeGrid[x][y].x = x;
-        _ticTacToeGrid[x][y].y = y;
-    }
-
     void ClearSlot(int x, int y)
     {
-        _ticTacToeGrid[x][y].Clear();
+        Grid[x][y].Clear();
     }
 
-    bool Set(int x, int y, Player player)
+    bool SetPiece(int x, int y, Player player)
     {
-        return _ticTacToeGrid[x][y].AttachPiece(player.Piece);
+        Grid[x][y].Piece = player.Piece;
+        Grid[x][y].IsOccupied = true;
+        return Grid[x][y].Piece == player.Piece;
     }
 }

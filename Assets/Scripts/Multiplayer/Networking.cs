@@ -257,13 +257,13 @@ public class Networking : MonoBehaviourPunCallbacks
     [PunRPC]
     void Explosion(float x, float y, float z)
     {
-        StartCoroutine(Slot.PlayExplosion(new Vector3(x, y, z)));
+        StartCoroutine(SlotUnity.PlayExplosion(new Vector3(x, y, z)));
     }
 
     [PunRPC]
     void Sound(float x, float y, float z)
     {
-        StartCoroutine(Slot.PlaySound(new Vector3(x, y, z)));
+        StartCoroutine(SlotUnity.PlaySound(new Vector3(x, y, z)));
     }
 
     [PunRPC]
@@ -323,7 +323,7 @@ public class Networking : MonoBehaviourPunCallbacks
 
     void SetOccupied(int x, int y)
     {
-        TicTacToeGrid grid = GameObject.Find("GameLogic").GetComponent<GameLogic>().Grid;
-        grid.Get(x, y).IsOccupied = true;
+        TicTacToeGrid gridBase = GameObject.Find("GameLogic").GetComponent<GameLogic>().Grid.GridBase;
+        gridBase.Grid[x][y].IsOccupied = true;
     }
 }
