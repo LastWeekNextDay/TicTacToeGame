@@ -81,9 +81,9 @@ public class GameLogic : MonoBehaviour
         {
             string piece = SessionInfo.Instance.xo.ToString();
             Player1.Piece = piece.ToString();
+            NetworkManager.AssignPiece(piece);
             Player2.Piece = (piece.ToString() == "X") ? "O" : "X";
             Turn = Player1.Piece == "X" ? Player1 : Player2;
-            NetworkManager.AssignPiece(piece);
         }
         if (SessionInfo.Instance.Multiplayer == false)
         {

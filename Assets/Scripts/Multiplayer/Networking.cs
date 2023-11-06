@@ -316,7 +316,7 @@ public class Networking : MonoBehaviourPunCallbacks
         else
         {
             gameLogic.Player2.Piece = "X";
-      }
+        }
     }
 
     [PunRPC]
