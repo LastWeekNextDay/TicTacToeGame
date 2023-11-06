@@ -23,6 +23,7 @@ public class CameraScript : MonoBehaviour
         TicTacToeGridUnity grid = GameObject.Find("TicTacToeGrid").GetComponent<TicTacToeGridUnity>();
         int size = grid.GridBase.Size;
         Vector3 middleSlot = grid.SlotObjGrid[size / 2][size / 2].gameObject.transform.position;
+        if (size % 2 == 0) {  middleSlot -= new Vector3(0.5f, 0, 0.5f); }
         transform.position = new Vector3(middleSlot.x, middleSlot.y + size, middleSlot.z);
     }
 }

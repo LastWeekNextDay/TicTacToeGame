@@ -22,6 +22,9 @@ public class UIController : MonoBehaviour
 
     public void BackToMenu()
     {
+        SessionInfo.Instance.WinCondition = 0;
+        SessionInfo.Instance.GridSize = 0;
+        SessionInfo.Instance.xo = "";
         PhotonNetwork.Disconnect();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
@@ -92,7 +95,7 @@ public class UIController : MonoBehaviour
     void UpdateTurnText()
     {
         string yourTurn = "Now is Your Turn";
-        string opponentTurn = "Now is Opponent Turn";
+        string opponentTurn = "Now is Opponent's Turn";
         if (_gameLogic.Turn == null) { return; }
         /*GamedataText.text = "Turn: " + _gameLogic.Turn.ToString();*/
         if (_gameLogic.Turn.GetComponent<PhotonView>() == null) {

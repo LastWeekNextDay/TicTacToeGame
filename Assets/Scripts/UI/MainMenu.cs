@@ -17,7 +17,12 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         if(SessionInfo.Instance.GridSize > 0 && SessionInfo.Instance.WinCondition > 0 && (SessionInfo.Instance.xo == "X" || SessionInfo.Instance.xo == "O"))
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        {
+            if (SessionInfo.Instance.GridSize >= SessionInfo.Instance.WinCondition)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+        }
     }
 
     public void MPJoinGame()
