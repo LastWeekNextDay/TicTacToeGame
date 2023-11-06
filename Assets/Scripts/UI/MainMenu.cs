@@ -9,35 +9,33 @@ public class MainMenu : MonoBehaviour
 {
     public TMP_InputField SPgridSizeText;
     public TMP_InputField SPwinConditionText;
-    public TMP_InputField SPHxoText;
     public TMP_InputField MPHgridSizeText;
     public TMP_InputField MPHwinConditionText;
     public TMP_InputField MPHroomNameText;
-    public TMP_InputField MPHxoText;
     public TMP_InputField MPJroomNameText;
 
     public void StartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if(SessionInfo.Instance.GridSize > 0 && SessionInfo.Instance.WinCondition > 0 && (SessionInfo.Instance.xo == "X" || SessionInfo.Instance.xo == "O"))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void SinglePlayer()
     {
         SessionInfo.Instance.Multiplayer = false;
-        SessionInfo.Instance.GridSize = int.Parse(SPgridSizeText.text);
-        SessionInfo.Instance.WinCondition = int.Parse(SPwinConditionText.text);
-        SessionInfo.Instance.xo = SPHxoText.text;
+        SessionInfo.Instance.GridSize = int.TryParse(SPgridSizeText.text, out int num1) ? num1 : 0;
+        SessionInfo.Instance.WinCondition = int.TryParse(SPwinConditionText.text, out int num2) ? num2 : 0;
+
         StartGame();
     }
 
     public void HostGame()
     {
         SessionInfo.Instance.Multiplayer = true;
-        SessionInfo.Instance.GridSize = int.Parse(MPHgridSizeText.text);
-        SessionInfo.Instance.WinCondition = int.Parse(MPHwinConditionText.text);
+        SessionInfo.Instance.GridSize = int.TryParse(MPHgridSizeText.text, out int num3) ? num3 : 0;
+        SessionInfo.Instance.WinCondition = int.TryParse(MPHwinConditionText.text, out int num4) ? num4 : 0;
         SessionInfo.Instance.MultiplayerType = "Host";
         SessionInfo.Instance.RoomName = MPHroomNameText.text;
-        SessionInfo.Instance.xo = MPHxoText.text;
         StartGame();
     }
 
@@ -53,5 +51,20 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Quit");
         Application.Quit();
+    }
+
+    public void SetX()
+    {
+        SessionInfo.Instance.xo = "X";
+    }
+
+    public void SetO()
+    {
+        SessionInfo.Instance.xo = "O";
+    }
+
+    public void SetRand()
+    {
+        SessionInfo.Instance.xo = (Random.Range(0, 2) == 0) ? "X" : "O";
     }
 }
