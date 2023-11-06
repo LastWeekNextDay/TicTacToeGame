@@ -20,6 +20,11 @@ public class MainMenu : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    public void MPJoinGame()
+    {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
     public void SinglePlayer()
     {
         SessionInfo.Instance.Multiplayer = false;
@@ -44,7 +49,7 @@ public class MainMenu : MonoBehaviour
         SessionInfo.Instance.Multiplayer = true;
         SessionInfo.Instance.MultiplayerType = "Join";
         SessionInfo.Instance.RoomName = MPJroomNameText.text;
-        StartGame();
+        MPJoinGame();
     }
 
     public void QuitGame()
