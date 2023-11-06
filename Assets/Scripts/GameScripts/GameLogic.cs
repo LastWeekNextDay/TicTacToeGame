@@ -61,7 +61,7 @@ public class GameLogic : MonoBehaviour
         Grid.SetupGrid(gridSize);
         Camera.main.GetComponent<CameraScript>().SetupCamera();
         VictoryCalculator = new VictoryCalculator(Grid.GridBase, winCondition);
-        RandomizeFirstGoer();
+        SelectFirstGoer();
         GameActive = true;
     }
 
@@ -75,22 +75,22 @@ public class GameLogic : MonoBehaviour
         OnChangeTurn();
     }
 
-    void RandomizeFirstGoer()
+    void SelectFirstGoer()
     {
         if (SessionInfo.Instance.MultiplayerType == "Host")
         {
-            string host = SessionInfo.Instance.xo.ToString();
-            Player1.Piece = host.ToString();
-            Player2.Piece = (host.ToString() == "X") ? "O" : "X";
-            Turn = Player1;
-            NetworkManager.AssignPiece(host);
+            string piece = SessionInfo.Instance.xo.ToString();
+            Player1.Piece = piece.ToString();
+            Player2.Piece = (piece.ToString() == "X") ? "O" : "X";
+            Turn = Player1.Piece == "X" ? Player1 : Player2;
+            NetworkManager.AssignPiece(piece);
         }
         if (SessionInfo.Instance.Multiplayer == false)
         {
-            string host = SessionInfo.Instance.xo.ToString();
-            Player1.Piece = host.ToString();
-            Player2.Piece = (host.ToString() == "X") ? "O" : "X";
-            Turn = Player1;
+            string piece = SessionInfo.Instance.xo.ToString();
+            Player1.Piece = piece.ToString();
+            Player2.Piece = (piece.ToString() == "X") ? "O" : "X";
+            Turn = Player1.Piece == "X" ? Player1 : Player2;
         }
     }
 

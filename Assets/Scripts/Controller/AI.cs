@@ -20,6 +20,7 @@ public class AI : Player
     protected override void Update()
     {
         base.Update();
+        if (Piece != "X" && Piece != "O") { return; }
         if (!_makingMove)
         {
             if (_gameLogic.Turn.gameObject == this.gameObject)
@@ -63,7 +64,7 @@ public class AI : Player
                 {
                     if (!gridBase.Grid[x][y].IsOccupied)
                     {
-                        _gameLogic.Grid.PlacePiece(x, y, this.gameObject.GetComponent<Player>());
+                        _gameLogic.Grid.PlacePiece(x, y, this);
                         break;
                     }
                     else
