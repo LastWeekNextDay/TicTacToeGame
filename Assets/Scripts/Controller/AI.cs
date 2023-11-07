@@ -45,7 +45,7 @@ public class AI : Player
         _justPlacedPiece = false;
         TicTacToeGrid gridBase = _gameLogic.Grid.GridBase;
         int gridSize = gridBase.Size;
-        if (gridSize < 1) { yield break; };
+        if (!_gameLogic.GameActive) { yield break; };
         Dictionary<int, List<int>> valuesXY = new Dictionary<int, List<int>>();
         for (int x = 0; x < gridSize; x++)
         {
